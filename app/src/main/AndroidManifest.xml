@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-package="com.example.myapplication">
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />
+package="com.example.photogallery">
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
 <uses-feature android:name="android.hardware.camera" android:required="true" />
 <application
     android:allowBackup="true"
@@ -19,7 +19,7 @@ package="com.example.myapplication">
     </activity>
     <provider
         android:name="androidx.core.content.FileProvider"
-        android:authorities="com.example.PhotoGallery.fileprovider"
+        android:authorities="com.example.photogallery.fileprovider"
         android:exported="false"
         android:grantUriPermissions="true">
         <meta-data
