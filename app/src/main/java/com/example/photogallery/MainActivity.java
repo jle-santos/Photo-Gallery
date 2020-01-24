@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 // import com.example.photogallery.R;
 
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Send picture location to search activity
     public static final String Picture_Location = "com.example.photogallery.Picture_Location";
-    String mCurrentPhotoPath;
+    String mCurrentPhotoPath = "";
 
     // Hold user entered caption
     private String captionText = "";
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         final  TextView caption = findViewById(R.id.captionText);
 
         // Set default text for caption text view
-        caption.setText("Please Enter a Caption");
+        caption.setText("Take a photo!");
 
         // if caption button is clicked add caption text and save it
         btnCaption.setOnClickListener(new View.OnClickListener() {
@@ -67,40 +68,50 @@ public class MainActivity extends AppCompatActivity {
                 // print to terminal when button is pressed
                 Log.i("btnCaption", "has been pressed");
 
-                // Create pop dialogue box
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Please Enter Caption");
+                if (mCurrentPhotoPath.isEmpty() || mCurrentPhotoPath == null) {
+                    Toast.makeText(getApplicationContext(), "Take a photo!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Create pop dialogue box
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("Please Enter Caption");
 
-                // Set up the input
-                final EditText input = new EditText(MainActivity.this);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
+                    // Set up the input
+                    final EditText input = new EditText(MainActivity.this);
+                    // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+                    builder.setView(input);
+                    // Set up the buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            captionText = input.getText().toString(); //get value from user
+                            caption.setText(captionText); // write to textview
 
-                // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        captionText = input.getText().toString(); //get value from user
-                        caption.setText(captionText); // write to textview
+                            String OriginalPhotoPath = mCurrentPhotoPath;
 
-                        // Overwrite file name with caption
-                        //String filelocation = "/storage/emulated/0/Android/data/com.example.photogallery/files/Pictures/";
-                        String newName = mCurrentPhotoPath.substring(0, mCurrentPhotoPath.length() - 4) + "_" + captionText + ".jpg";
-                        File currentPicutrename = new File(mCurrentPhotoPath);
-                        File newPicturename = new File(newName);
-                        currentPicutrename.renameTo(newPicturename);
-                        mCurrentPhotoPath = newName;
+                            // Remove Previous caption if one is found
+                            if (mCurrentPhotoPath.contains("_*")){
+                                mCurrentPhotoPath = mCurrentPhotoPath.substring(0, mCurrentPhotoPath.indexOf("_*"));
+                                mCurrentPhotoPath = mCurrentPhotoPath + ".jpg";
+                            }
+                            // Overwrite file name with caption
+                            //String filelocation = "/storage/emulated/0/Android/data/com.example.photogallery/files/Pictures/";
+                            String newName = mCurrentPhotoPath.substring(0, mCurrentPhotoPath.length() - 4) + "_*" + captionText + ".jpg";
+                            File currentPicutrename = new File(OriginalPhotoPath);
+                            File newPicturename = new File(newName);
+                            currentPicutrename.renameTo(newPicturename);
+                            mCurrentPhotoPath = newName;
 
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.show();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                }
 
             }
         });
@@ -124,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Picture_Location, mCurrentPhotoPath); //pass file location to new activity
         startActivityForResult(intent, 999);
     }
-
-
 
 
 
@@ -173,8 +182,20 @@ public class MainActivity extends AppCompatActivity {
         } else if (requestCode == 999 && resultCode == RESULT_OK) {
             ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
             TextView captiontextrefresh = findViewById(R.id.captionText);
-            captiontextrefresh.setText("Please Enter a Caption");
-            mImageView.setImageBitmap(BitmapFactory.decodeFile(data.getStringExtra("Path")));
+
+            String filePath = data.getStringExtra("Path");
+            String fileName = data.getStringExtra("Filename");
+            // Print image to imageview
+            mImageView.setImageBitmap(BitmapFactory.decodeFile(filePath));
+            // print to file name to text view
+            String fileName_2 = fileName.substring(fileName.indexOf("_*")+2);
+            fileName_2 = fileName_2.substring(0, fileName_2.length() - 4);
+            captiontextrefresh.setText(fileName_2.trim());
+
+            mCurrentPhotoPath = filePath;
+
+
+
         }
     }
 

@@ -31,7 +31,7 @@ public class searchActivity extends AppCompatActivity {
         final Button btnCancel = findViewById(R.id.btnCancel);
         final Button btnSearch = findViewById(R.id.btnSearch);
         final EditText captionSearch = findViewById(R.id.searchCaption);
-        final EditText dateSearch = findViewById(R.id.searchDate);
+
 
 
         // close activity
@@ -49,15 +49,12 @@ public class searchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("Search Button:", "Button has been pressed");
-
                 // Create intent to send data back to mainactivity
                 Intent path = new Intent();
 
                 String captionQuery = captionSearch.getText().toString();
-                String dateQuery = dateSearch.getText().toString();
-
                 // Check something is entered in the search boxes
-                if (captionQuery.isEmpty() && dateQuery.isEmpty()) { // if empty box
+                if (captionQuery.isEmpty() && captionQuery.isEmpty()) { // if empty box
                     Toast.makeText(getApplicationContext(), "Please finish query", Toast.LENGTH_SHORT).show();
                 } else { // if box not empty
                     File dir = new File("/storage/emulated/0/Android/data/com.example.photogallery/files/Pictures/");
@@ -65,16 +62,11 @@ public class searchActivity extends AppCompatActivity {
                     if (directoryListing != null) {
                         for (File child : directoryListing) {
                             // check for date in file name
-                            if (child.getName().contains(dateQuery) && dateQuery != null) {
+                            if (child.getName().contains(captionQuery)) {
                                 path.putExtra("Path", child.getAbsolutePath());
+                                path.putExtra("Filename", child.getName());
                                 setResult(RESULT_OK, path);
-                                finish();
-                            } else if (child.getName().contains(captionQuery) && captionQuery != null){
-                                path.putExtra("Path", child.getAbsolutePath());
-                                setResult(RESULT_OK, path);
-                                finish();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Nothing Found", Toast.LENGTH_SHORT).show();
+                                finish(); //EXIT when picture is found
                             }
                         }
                     } else {
