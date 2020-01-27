@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Photo List
     private ArrayList<String> photoGallery;
+    private int currentPhotoIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         final  TextView caption = findViewById(R.id.captionText);
 
         // Set default text for caption text view
-        caption.setText("Take a photo!");
+
 
         //Generate gallery
         Date minDate = new Date(Long.MIN_VALUE);
@@ -70,6 +71,13 @@ public class MainActivity extends AppCompatActivity {
 
         //Print to screen how many photos found
         Log.d("onCreate, number of photos:", Integer.toString(photoGallery.size()));
+
+        caption.setText("Photos in Gallery:" + Integer.toString(photoGallery.size()));
+
+        if (photoGallery.size() > 0)
+            mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
+
+        displayPhoto(mCurrentPhotoPath);
 
         // if caption button is clicked add caption text and save it
         btnCaption.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // if search button is clickeed start new activity where search will be done
+        // if search button is clicked start new activity where search will be done
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,6 +159,12 @@ public class MainActivity extends AppCompatActivity {
            }
        }
         return populateGallery;
+    }
+
+    // Function to display any generic photo
+    private void displayPhoto(String path) {
+        ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
+        mImageView.setImageBitmap(BitmapFactory.decodeFile(path));
     }
 
     // function to open new search activity
@@ -196,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
     // Puts image from camera onto the imageview object
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // exectue this if from camera
+        // execute this if from camera
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
             TextView captiontextrefresh = findViewById(R.id.captionText);
@@ -217,9 +231,6 @@ public class MainActivity extends AppCompatActivity {
             captiontextrefresh.setText(fileName_2.trim());
 
             mCurrentPhotoPath = filePath;
-
-
-
         }
     }
 
