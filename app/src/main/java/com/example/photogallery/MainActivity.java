@@ -33,6 +33,7 @@ import org.w3c.dom.Text;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -46,12 +47,13 @@ public class MainActivity extends AppCompatActivity {
     // Hold user entered caption
     private String captionText = "";
 
+    //Photo List
+    private ArrayList<String> photoGallery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         // Object Creation
         final Button btnCaption = findViewById(R.id.btnCaption);
@@ -60,6 +62,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Set default text for caption text view
         caption.setText("Take a photo!");
+
+        //Generate gallery
+        Date minDate = new Date(Long.MIN_VALUE);
+        Date maxDate = new Date(Long.MAX_VALUE);
+        photoGallery = populateGallery(minDate, maxDate);
+
+        //Print to screen how many photos found
+        Log.d("onCreate, number of photos:", Integer.toString(photoGallery.size()));
 
         // if caption button is clicked add caption text and save it
         btnCaption.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +137,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Function to generate list of files in folder
+    private ArrayList<String> populateGallery(Date minDate, Date maxDate) {
+        File folder = new File(Environment.getExternalStorageDirectory()
+                .getAbsolutePath(), "/Android/data/com.example.photogallery/files/Pictures");
 
+        ArrayList<String> populateGallery = new ArrayList<String>();
+
+       File[] currentFiles = folder.listFiles();
+       for(File file : currentFiles) {
+           if (!file.isDirectory()) {
+               populateGallery.add(new String(file.getName()));
+           }
+       }
+        return populateGallery;
+    }
 
     // function to open new search activity
     public void openSearchActivity() {
