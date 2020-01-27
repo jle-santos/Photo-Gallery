@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Function to display any generic photo
-    private void displayPhoto(String path) {
+    public void displayPhoto(String path) {
         ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
         mImageView.setImageBitmap(BitmapFactory.decodeFile(path));
     }
