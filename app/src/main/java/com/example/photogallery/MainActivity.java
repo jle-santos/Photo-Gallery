@@ -88,11 +88,10 @@ public class MainActivity extends AppCompatActivity {
             //Print to screen how many photos found
 
             Log.d("Dev::/onCreate, number of photos:", Integer.toString(photoGallery.size()));
-            caption.setText("Photos in Gallery:" + Integer.toString(photoGallery.size()));
+            //caption.setText("Photos in Gallery:" + Integer.toString(photoGallery.size()));
             mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
 
-            ImageView homeImage = (ImageView) findViewById(R.id.ivGallery);
-            homeImage.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+            displayPhoto(mCurrentPhotoPath);
 
         }
 
