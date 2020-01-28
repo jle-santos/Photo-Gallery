@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                             caption.setText(captionText); // write to textview
 
                             String OriginalPhotoPath = mCurrentPhotoPath;
+                            Log.d("Dev:: Editing: ", OriginalPhotoPath);
 
                             // Remove Previous caption if one is found
                             if (mCurrentPhotoPath.contains("_*")){
@@ -129,14 +130,14 @@ public class MainActivity extends AppCompatActivity {
                             }
                             // Overwrite file name with caption
                             //String filelocation = "/storage/emulated/0/Android/data/com.example.photogallery/files/Pictures/";
+                            Log.d("Dev:: Editing: ", mCurrentPhotoPath);
                             String newName = mCurrentPhotoPath.substring(0, mCurrentPhotoPath.length() - 4) + "_*" + captionText + ".jpg";
-                            File currentPicutrename = new File(OriginalPhotoPath);
+                            File currentPicturename = new File(OriginalPhotoPath);
                             File newPicturename = new File(newName);
-                            currentPicutrename.renameTo(newPicturename);
+                            currentPicturename.renameTo(newPicturename);
                             mCurrentPhotoPath = newName;
                             photoGallery.set(currentPhotoIndex, mCurrentPhotoPath);
-
-
+                            Log.d("Dev:: Renamed file", mCurrentPhotoPath);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -173,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d("Dev:: btnNext,", Integer.toString(currentPhotoIndex));
                 displayPhoto(photoGallery.get(currentPhotoIndex));
+                mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
             }
         });
 
@@ -188,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d("Dev:: btnPrev,", Integer.toString(currentPhotoIndex));
                 displayPhoto(photoGallery.get(currentPhotoIndex));
+                mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
             }
         });
     }
@@ -215,6 +218,10 @@ public class MainActivity extends AppCompatActivity {
         ImageView iv = (ImageView) findViewById(R.id.ivGallery);
         iv.setImageBitmap(BitmapFactory.decodeFile(path));
 
+        writeCaption(path);
+    }
+
+    private void writeCaption(String path) {
         TextView captiontextrefresh = findViewById(R.id.captionText);
 
         // print to file name to text view
@@ -271,8 +278,8 @@ public class MainActivity extends AppCompatActivity {
             //Repopulate gallery
             photoGallery = populateGallery(new Date(Long.MIN_VALUE), new Date(Long.MAX_VALUE));
 
-            TextView captiontextrefresh = findViewById(R.id.captionText);
-            captiontextrefresh.setText("Please Enter a Caption");
+            //TextView captiontextrefresh = findViewById(R.id.captionText);
+            //captiontextrefresh.setText("Please Enter a Caption");
             displayPhoto(mCurrentPhotoPath);
 
         // execute this if from search activity
