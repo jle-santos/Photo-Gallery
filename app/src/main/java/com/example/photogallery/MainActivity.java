@@ -59,7 +59,9 @@ public class MainActivity extends AppCompatActivity {
         // Object Creation
         final Button btnCaption = findViewById(R.id.btnCaption);
         final Button btnSearch = findViewById(R.id.btnSearch);
-        final  TextView caption = findViewById(R.id.captionText);
+        final TextView caption = findViewById(R.id.captionText);
+        final Button btnNext = findViewById(R.id.btnNext);
+        final Button btnPrev = findViewById(R.id.btnPrev);
 
         // Set default text for caption text view
 
@@ -156,6 +158,36 @@ public class MainActivity extends AppCompatActivity {
                 openSearchActivity();
             }
         });
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ++currentPhotoIndex;
+
+                if (currentPhotoIndex < 0)
+                    currentPhotoIndex = 0;
+                if (currentPhotoIndex >= photoGallery.size())
+                    currentPhotoIndex = photoGallery.size() - 1;
+
+                Log.d("Dev:: btnNext,", Integer.toString(currentPhotoIndex));
+                displayPhoto(photoGallery.get(currentPhotoIndex));
+            }
+        });
+
+        btnPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                --currentPhotoIndex;
+
+                if (currentPhotoIndex < 0)
+                    currentPhotoIndex = 0;
+                if (currentPhotoIndex >= photoGallery.size())
+                    currentPhotoIndex = photoGallery.size() - 1;
+
+                Log.d("Dev:: btnPrev,", Integer.toString(currentPhotoIndex));
+                displayPhoto(photoGallery.get(currentPhotoIndex));
+            }
+        });
     }
 
     //Function to generate list of files in folder
@@ -170,16 +202,16 @@ public class MainActivity extends AppCompatActivity {
        if(currentFiles != null) {
            for (File file : currentFiles) {
                if (!file.isDirectory()) {
-                   populateGallery.add(new String(file.getName()));
+                   populateGallery.add(new String(file.getPath()));
                }
            }
        }
     return populateGallery;
     }
 
-    // Function to display any generic photo
-    public void displayPhoto(String path) {
-
+    private void displayPhoto(String path) {
+        ImageView iv = (ImageView) findViewById(R.id.ivGallery);
+        iv.setImageBitmap(BitmapFactory.decodeFile(path));
     }
 
     // function to open new search activity
@@ -227,19 +259,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // execute this if from camera
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
+
+            //Repopulate gallery
+            photoGallery = populateGallery(new Date(Long.MIN_VALUE), new Date(Long.MAX_VALUE));
+
             TextView captiontextrefresh = findViewById(R.id.captionText);
             captiontextrefresh.setText("Please Enter a Caption");
-            mImageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+            displayPhoto(mCurrentPhotoPath);
         // execute this if from search activity
         } else if (requestCode == 999 && resultCode == RESULT_OK) {
-            ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
+            //ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
             TextView captiontextrefresh = findViewById(R.id.captionText);
 
             String filePath = data.getStringExtra("Path");
             String fileName = data.getStringExtra("Filename");
             // Print image to imageview
-            mImageView.setImageBitmap(BitmapFactory.decodeFile(filePath));
+            //mImageView.setImageBitmap(BitmapFactory.decodeFile(filePath));
+
+            displayPhoto(mCurrentPhotoPath);
+
             // print to file name to text view
             String fileName_2 = fileName.substring(fileName.indexOf("_*")+2);
             fileName_2 = fileName_2.substring(0, fileName_2.length() - 4);
