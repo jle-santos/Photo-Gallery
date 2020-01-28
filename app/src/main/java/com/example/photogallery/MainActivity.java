@@ -33,6 +33,7 @@ import org.w3c.dom.Text;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -46,20 +47,52 @@ public class MainActivity extends AppCompatActivity {
     // Hold user entered caption
     private String captionText = "";
 
+    //Photo List
+    private ArrayList<String> photoGallery;
+    private int currentPhotoIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         // Object Creation
         final Button btnCaption = findViewById(R.id.btnCaption);
         final Button btnSearch = findViewById(R.id.btnSearch);
-        final  TextView caption = findViewById(R.id.captionText);
+        final TextView caption = findViewById(R.id.captionText);
+        final Button btnNext = findViewById(R.id.btnNext);
+        final Button btnPrev = findViewById(R.id.btnPrev);
 
         // Set default text for caption text view
-        caption.setText("Take a photo!");
+
+
+        //Generate gallery
+        Date minDate = new Date(Long.MIN_VALUE);
+        Date maxDate = new Date(Long.MAX_VALUE);
+        photoGallery = populateGallery(minDate, maxDate);
+
+
+
+        Log.i("Dev::", "generating gallery");
+
+
+        if (photoGallery.isEmpty()) {
+            Log.i("Dev::", "No photos found");
+            caption.setText("Empty Gallery");
+        }
+        else
+        {
+            Log.i("Dev::", "photos found");
+            //Print to screen how many photos found
+
+            Log.d("Dev::/onCreate, number of photos:", Integer.toString(photoGallery.size()));
+            caption.setText("Photos in Gallery:" + Integer.toString(photoGallery.size()));
+            mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
+
+            ImageView homeImage = (ImageView) findViewById(R.id.ivGallery);
+            homeImage.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+
+        }
 
         // if caption button is clicked add caption text and save it
         btnCaption.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                             caption.setText(captionText); // write to textview
 
                             String OriginalPhotoPath = mCurrentPhotoPath;
+                            Log.d("Dev:: Editing: ", OriginalPhotoPath);
 
                             // Remove Previous caption if one is found
                             if (mCurrentPhotoPath.contains("_*")){
@@ -96,12 +130,14 @@ public class MainActivity extends AppCompatActivity {
                             }
                             // Overwrite file name with caption
                             //String filelocation = "/storage/emulated/0/Android/data/com.example.photogallery/files/Pictures/";
+                            Log.d("Dev:: Editing: ", mCurrentPhotoPath);
                             String newName = mCurrentPhotoPath.substring(0, mCurrentPhotoPath.length() - 4) + "_*" + captionText + ".jpg";
-                            File currentPicutrename = new File(OriginalPhotoPath);
+                            File currentPicturename = new File(OriginalPhotoPath);
                             File newPicturename = new File(newName);
-                            currentPicutrename.renameTo(newPicturename);
+                            currentPicturename.renameTo(newPicturename);
                             mCurrentPhotoPath = newName;
-
+                            photoGallery.set(currentPhotoIndex, mCurrentPhotoPath);
+                            Log.d("Dev:: Renamed file", mCurrentPhotoPath);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -116,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // if search button is clickeed start new activity where search will be done
+        // if search button is clicked start new activity where search will be done
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,9 +161,74 @@ public class MainActivity extends AppCompatActivity {
                 openSearchActivity();
             }
         });
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ++currentPhotoIndex;
+
+                if (currentPhotoIndex < 0)
+                    currentPhotoIndex = 0;
+                if (currentPhotoIndex >= photoGallery.size())
+                    currentPhotoIndex = photoGallery.size() - 1;
+
+                Log.d("Dev:: btnNext,", Integer.toString(currentPhotoIndex));
+                displayPhoto(photoGallery.get(currentPhotoIndex));
+                mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
+            }
+        });
+
+        btnPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                --currentPhotoIndex;
+
+                if (currentPhotoIndex < 0)
+                    currentPhotoIndex = 0;
+                if (currentPhotoIndex >= photoGallery.size())
+                    currentPhotoIndex = photoGallery.size() - 1;
+
+                Log.d("Dev:: btnPrev,", Integer.toString(currentPhotoIndex));
+                displayPhoto(photoGallery.get(currentPhotoIndex));
+                mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
+            }
+        });
     }
 
+    //Function to generate list of files in folder
+    private ArrayList<String> populateGallery(Date minDate, Date maxDate) {
+        File folder = new File(Environment.getExternalStorageDirectory()
+                .getAbsolutePath(), "/Android/data/com.example.photogallery/files/Pictures");
 
+        ArrayList<String> populateGallery = new ArrayList<String>();
+
+       File[] currentFiles = folder.listFiles();
+
+       if(currentFiles != null) {
+           for (File file : currentFiles) {
+               if (!file.isDirectory()) {
+                   populateGallery.add(new String(file.getPath()));
+               }
+           }
+       }
+    return populateGallery;
+    }
+
+    private void displayPhoto(String path) {
+        ImageView iv = (ImageView) findViewById(R.id.ivGallery);
+        iv.setImageBitmap(BitmapFactory.decodeFile(path));
+
+        writeCaption(path);
+    }
+
+    private void writeCaption(String path) {
+        TextView captiontextrefresh = findViewById(R.id.captionText);
+
+        // print to file name to text view
+        String fileName_2 = path.substring(path.indexOf("_*")+2);
+        fileName_2 = fileName_2.substring(0, fileName_2.length() - 4);
+        captiontextrefresh.setText(fileName_2.trim());
+    }
 
     // function to open new search activity
     public void openSearchActivity() {
@@ -135,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Picture_Location, mCurrentPhotoPath); //pass file location to new activity
         startActivityForResult(intent, 999);
     }
-
 
 
     // Activate camera and take the picture
@@ -164,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, ".jpg",storageDir);
+        File image = File.createTempFile(imageFileName, "_*NoCaption.jpg",storageDir);
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
@@ -172,30 +272,34 @@ public class MainActivity extends AppCompatActivity {
     // Puts image from camera onto the imageview object
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // exectue this if from camera
+        // execute this if from camera
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
-            TextView captiontextrefresh = findViewById(R.id.captionText);
-            captiontextrefresh.setText("Please Enter a Caption");
-            mImageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+
+            //Repopulate gallery
+            photoGallery = populateGallery(new Date(Long.MIN_VALUE), new Date(Long.MAX_VALUE));
+
+            //TextView captiontextrefresh = findViewById(R.id.captionText);
+            //captiontextrefresh.setText("Please Enter a Caption");
+            displayPhoto(mCurrentPhotoPath);
+
         // execute this if from search activity
         } else if (requestCode == 999 && resultCode == RESULT_OK) {
-            ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
+            //ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
             TextView captiontextrefresh = findViewById(R.id.captionText);
 
             String filePath = data.getStringExtra("Path");
             String fileName = data.getStringExtra("Filename");
             // Print image to imageview
-            mImageView.setImageBitmap(BitmapFactory.decodeFile(filePath));
+            //mImageView.setImageBitmap(BitmapFactory.decodeFile(filePath));
+
+            displayPhoto(mCurrentPhotoPath);
+
             // print to file name to text view
             String fileName_2 = fileName.substring(fileName.indexOf("_*")+2);
             fileName_2 = fileName_2.substring(0, fileName_2.length() - 4);
             captiontextrefresh.setText(fileName_2.trim());
 
             mCurrentPhotoPath = filePath;
-
-
-
         }
     }
 

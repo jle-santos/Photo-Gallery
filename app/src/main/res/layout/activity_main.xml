@@ -52,7 +52,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="59dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginBottom="192dp"
+        android:layout_marginBottom="180dp"
         android:text="Caption goes here"
         android:textAlignment="center"
         android:textSize="24sp"
@@ -67,5 +67,26 @@
         android:layout_marginEnd="22dp"
         android:layout_marginBottom="130dp"
         android:text="Search" />
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="45dp"
+        android:text="NEXT" />
+
+    <Button
+        android:id="@+id/btnPrev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="275dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="45dp"
+        android:text="PREV" />
 
 </RelativeLayout>

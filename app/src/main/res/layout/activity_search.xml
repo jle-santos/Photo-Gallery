@@ -23,10 +23,15 @@
         android:id="@+id/caption_handle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="10dp"
         android:text="Caption/Date:"
         android:textAlignment="viewStart"
+        app:layout_constraintBottom_toTopOf="@+id/searchCaption"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Photogallery Search"
+        android:text="Gallery Search"
         android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,10 +51,12 @@
         android:id="@+id/searchCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="68dp"
         android:ems="10"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -66,10 +73,10 @@
         android:id="@+id/btnCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="252dp"
-        android:layout_marginEnd="60dp"
         android:text="Cancel"
-        app:layout_constraintEnd_toStartOf="@+id/btnSearch"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
