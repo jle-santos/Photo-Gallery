@@ -25,10 +25,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="100dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:text="Caption:"
+        android:text="CAPTION:"
         android:textAlignment="viewStart"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/searchCaption"
+        app:layout_constraintEnd_toStartOf="@+id/searchCaption"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -50,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="25dp"
         android:ems="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -76,21 +79,47 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editMinDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
         android:ems="10"
         android:inputType="date"
-        tools:layout_editor_absoluteX="178dp"
-        tools:layout_editor_absoluteY="153dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchCaption" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/editMaxDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
         android:ems="10"
         android:inputType="date"
-        tools:layout_editor_absoluteX="177dp"
-        tools:layout_editor_absoluteY="206dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editMinDate" />
+
+    <TextView
+        android:id="@+id/dateTextMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="10dp"
+        android:text="DATE MIN:"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/editMinDate"
+        app:layout_constraintTop_toBottomOf="@+id/caption_handle" />
+
+    <TextView
+        android:id="@+id/dateTextMax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="10dp"
+        android:text="DATE MAX:"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/editMaxDate"
+        app:layout_constraintTop_toBottomOf="@+id/dateTextMin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

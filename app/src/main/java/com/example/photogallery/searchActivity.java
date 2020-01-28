@@ -32,6 +32,9 @@ public class searchActivity extends AppCompatActivity {
         final Button btnSearch = findViewById(R.id.btnSearch);
         final EditText captionSearch = findViewById(R.id.searchCaption);
 
+        //Date search
+        final EditText minDate = findViewById(R.id.editMinDate);
+        final EditText maxDate = findViewById(R.id.editMaxDate);
 
 
         // close activity
@@ -53,6 +56,8 @@ public class searchActivity extends AppCompatActivity {
                 Intent path = new Intent();
 
                 String captionQuery = captionSearch.getText().toString();
+
+
                 // Check something is entered in the search boxes
                 if (captionQuery.isEmpty() && captionQuery.isEmpty()) { // if empty box
                     Toast.makeText(getApplicationContext(), "Please finish query", Toast.LENGTH_SHORT).show();
