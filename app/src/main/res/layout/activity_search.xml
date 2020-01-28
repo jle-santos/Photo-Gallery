@@ -76,7 +76,6 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="252dp"
         android:text="Cancel"
-        app:layout_constraintEnd_toStartOf="@+id/btnSearch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

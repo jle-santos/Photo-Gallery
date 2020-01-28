@@ -69,15 +69,28 @@ public class MainActivity extends AppCompatActivity {
         Date maxDate = new Date(Long.MAX_VALUE);
         photoGallery = populateGallery(minDate, maxDate);
 
-        //Print to screen how many photos found
-        Log.d("onCreate, number of photos:", Integer.toString(photoGallery.size()));
 
-        caption.setText("Photos in Gallery:" + Integer.toString(photoGallery.size()));
 
-        if (photoGallery.size() > 0)
+        Log.i("Dev::", "generating gallery");
+
+
+        if (photoGallery.isEmpty()) {
+            Log.i("Dev::", "No photos found");
+            caption.setText("Empty Gallery");
+        }
+        else
+        {
+            Log.i("Dev::", "photos found");
+            //Print to screen how many photos found
+
+            Log.d("Dev::/onCreate, number of photos:", Integer.toString(photoGallery.size()));
+            caption.setText("Photos in Gallery:" + Integer.toString(photoGallery.size()));
             mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
 
-        displayPhoto(mCurrentPhotoPath);
+            ImageView homeImage = (ImageView) findViewById(R.id.ivGallery);
+            homeImage.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+
+        }
 
         // if caption button is clicked add caption text and save it
         btnCaption.setOnClickListener(new View.OnClickListener() {
@@ -153,18 +166,20 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> populateGallery = new ArrayList<String>();
 
        File[] currentFiles = folder.listFiles();
-       for(File file : currentFiles) {
-           if (!file.isDirectory()) {
-               populateGallery.add(new String(file.getName()));
+
+       if(currentFiles != null) {
+           for (File file : currentFiles) {
+               if (!file.isDirectory()) {
+                   populateGallery.add(new String(file.getName()));
+               }
            }
        }
-        return populateGallery;
+    return populateGallery;
     }
 
     // Function to display any generic photo
     public void displayPhoto(String path) {
-        ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
-        mImageView.setImageBitmap(BitmapFactory.decodeFile(path));
+
     }
 
     // function to open new search activity
