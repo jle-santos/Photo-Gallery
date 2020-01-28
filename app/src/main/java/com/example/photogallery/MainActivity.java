@@ -134,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
                             File newPicturename = new File(newName);
                             currentPicutrename.renameTo(newPicturename);
                             mCurrentPhotoPath = newName;
+                            photoGallery.set(currentPhotoIndex, mCurrentPhotoPath);
+
 
                         }
                     });
@@ -212,6 +214,13 @@ public class MainActivity extends AppCompatActivity {
     private void displayPhoto(String path) {
         ImageView iv = (ImageView) findViewById(R.id.ivGallery);
         iv.setImageBitmap(BitmapFactory.decodeFile(path));
+
+        TextView captiontextrefresh = findViewById(R.id.captionText);
+
+        // print to file name to text view
+        String fileName_2 = path.substring(path.indexOf("_*")+2);
+        fileName_2 = fileName_2.substring(0, fileName_2.length() - 4);
+        captiontextrefresh.setText(fileName_2.trim());
     }
 
     // function to open new search activity
@@ -220,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Picture_Location, mCurrentPhotoPath); //pass file location to new activity
         startActivityForResult(intent, 999);
     }
-
 
 
     // Activate camera and take the picture
@@ -249,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, ".jpg",storageDir);
+        File image = File.createTempFile(imageFileName, "_*NoCaption.jpg",storageDir);
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
@@ -266,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
             TextView captiontextrefresh = findViewById(R.id.captionText);
             captiontextrefresh.setText("Please Enter a Caption");
             displayPhoto(mCurrentPhotoPath);
+
         // execute this if from search activity
         } else if (requestCode == 999 && resultCode == RESULT_OK) {
             //ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
