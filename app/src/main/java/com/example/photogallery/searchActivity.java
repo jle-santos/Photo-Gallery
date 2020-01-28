@@ -32,6 +32,9 @@ public class searchActivity extends AppCompatActivity {
         final Button btnSearch = findViewById(R.id.btnSearch);
         final EditText captionSearch = findViewById(R.id.searchCaption);
 
+        //Date search
+        final EditText minDate = findViewById(R.id.editMinDate);
+        final EditText maxDate = findViewById(R.id.editMaxDate);
 
 
         // close activity
@@ -53,10 +56,29 @@ public class searchActivity extends AppCompatActivity {
                 Intent path = new Intent();
 
                 String captionQuery = captionSearch.getText().toString();
+
+                /*
+                String dateMinQuery = minDate.getText().toString();
+                String dateMaxQuery = maxDate.getText().toString();
+                */
+
                 // Check something is entered in the search boxes
                 if (captionQuery.isEmpty() && captionQuery.isEmpty()) { // if empty box
                     Toast.makeText(getApplicationContext(), "Please finish query", Toast.LENGTH_SHORT).show();
-                } else { // if box not empty
+                    /*
+                    if(dateMinQuery.isEmpty() && dateMaxQuery.isEmpty()) {
+                        //Toast.makeText(getApplicationContext(), "Please finish query either CAPTION or DATE", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        path.putExtra("minDate", dateMinQuery);
+                        path.putExtra("maxDate", dateMaxQuery);
+                        setResult(RESULT_OK, path);
+                        finish();
+                    }
+                    */
+
+                }
+                else { // if box not empty
                     File dir = new File("/storage/emulated/0/Android/data/com.example.photogallery/files/Pictures/");
                     File[] directoryListing = dir.listFiles();
                     if (directoryListing != null) {
