@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
             // Print image to imageview
             //mImageView.setImageBitmap(BitmapFactory.decodeFile(filePath));
 
-            displayPhoto(mCurrentPhotoPath);
+
 
             // print to file name to text view
             String fileName_2 = fileName.substring(fileName.indexOf("_*")+2);
@@ -319,6 +319,7 @@ public class MainActivity extends AppCompatActivity {
             captiontextrefresh.setText(fileName_2.trim());
 
             mCurrentPhotoPath = filePath;
+            displayPhoto(mCurrentPhotoPath);
         }
     }
 
