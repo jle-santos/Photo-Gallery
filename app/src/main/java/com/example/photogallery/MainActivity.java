@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         final Button btnCaption = findViewById(R.id.btnCaption);
         final Button btnSearch = findViewById(R.id.btnSearch);
         final TextView caption = findViewById(R.id.captionText);
+        final TextView dateCaption = findViewById(R.id.dateView);
+
         final Button btnNext = findViewById(R.id.btnNext);
         final Button btnPrev = findViewById(R.id.btnPrev);
 
@@ -223,6 +225,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void writeCaption(String path) {
         TextView captiontextrefresh = findViewById(R.id.captionText);
+        TextView dateTextRefresh = findViewById(R.id.dateView);
+
+        String date = path.substring(path.indexOf("_")+1, path.indexOf("_")+9);
+        //String result = path.substring(path.indexOf("_") + 1, path.indexOf("_"));
+
+        dateTextRefresh.setText(date);
 
         // print to file name to text view
         String fileName_2 = path.substring(path.indexOf("_*")+2);
@@ -285,6 +293,17 @@ public class MainActivity extends AppCompatActivity {
         // execute this if from search activity
         } else if (requestCode == 999 && resultCode == RESULT_OK) {
             //ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
+
+            /*
+            String minDate = data.getStringExtra("minDate");
+            String maxDate = data.getStringExtra("maxDate");
+
+            Date startDate = new SimpleDateFormat("yyyyMMdd_HHmmss").parse(minDate);
+            Date endDate = new SimpleDateFormat("yyyyMMdd_HHmmss").parse(maxDate);
+
+            photoGallery = populateGallery(startDate, endDate);
+            */
+
             TextView captiontextrefresh = findViewById(R.id.captionText);
 
             String filePath = data.getStringExtra("Path");
