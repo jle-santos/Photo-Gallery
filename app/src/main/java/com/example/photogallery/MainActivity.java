@@ -174,9 +174,11 @@ public class MainActivity extends AppCompatActivity {
                 if (currentPhotoIndex >= photoGallery.size())
                     currentPhotoIndex = photoGallery.size() - 1;
 
-                Log.d("Dev:: btnNext,", Integer.toString(currentPhotoIndex));
-                displayPhoto(photoGallery.get(currentPhotoIndex));
-                mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
+                if(!photoGallery.isEmpty()) {
+                    Log.d("Dev:: btnNext,", Integer.toString(currentPhotoIndex));
+                    displayPhoto(photoGallery.get(currentPhotoIndex));
+                    mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
+                }
             }
         });
 
@@ -190,9 +192,11 @@ public class MainActivity extends AppCompatActivity {
                 if (currentPhotoIndex >= photoGallery.size())
                     currentPhotoIndex = photoGallery.size() - 1;
 
-                Log.d("Dev:: btnPrev,", Integer.toString(currentPhotoIndex));
-                displayPhoto(photoGallery.get(currentPhotoIndex));
-                mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
+                if(!photoGallery.isEmpty()) {
+                    Log.d("Dev:: btnPrev,", Integer.toString(currentPhotoIndex));
+                    displayPhoto(photoGallery.get(currentPhotoIndex));
+                    mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
+                }
             }
         });
     }
