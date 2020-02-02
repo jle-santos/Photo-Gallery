@@ -272,6 +272,12 @@ public class MainActivity extends AppCompatActivity {
     // located in android/data/com.example.photogallery/files/pictures
     private File createImageFile() throws IOException {
         // Create an image file name
+
+        //Create photo object
+        photoClass photo = new photoClass("FileName Test");
+        String name = photo.fileName;
+
+
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
