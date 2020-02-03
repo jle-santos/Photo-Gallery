@@ -48,7 +48,10 @@ public class MainActivity extends AppCompatActivity {
     private String captionText = "";
 
     //Photo List
-    private ArrayList<String> photoGallery;
+//    private ArrayList<String> photoGallery;
+
+    private ArrayList<photoClass> photoGallery;
+
     private int currentPhotoIndex = 0;
 
     @Override
@@ -65,14 +68,14 @@ public class MainActivity extends AppCompatActivity {
         final Button btnNext = findViewById(R.id.btnNext);
         final Button btnPrev = findViewById(R.id.btnPrev);
 
-        // Set default text for caption text view
-
-
         //Generate gallery
         Date minDate = new Date(Long.MIN_VALUE);
         Date maxDate = new Date(Long.MAX_VALUE);
-        photoGallery = populateGallery(minDate, maxDate);
 
+//        photoGallery = populateGallery(minDate, maxDate);
+
+
+        photoGallery = generatePhotos(minDate, maxDate);
 
 
         Log.i("Dev::", "generating gallery");
@@ -89,8 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("Dev::/onCreate, number of photos:", Integer.toString(photoGallery.size()));
             //caption.setText("Photos in Gallery:" + Integer.toString(photoGallery.size()));
-            mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
-
+            mCurrentPhotoPath = photoGallery.get(currentPhotoIndex).filePath;
             displayPhoto(mCurrentPhotoPath);
 
         }
@@ -121,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
                             captionText = input.getText().toString(); //get value from user
                             caption.setText(captionText); // write to textview
 
+                            //Set caption
+                            photoGallery.get(currentPhotoIndex).setCaption(captionText);
+
+                            /* Using metadata current version (old feature)
                             String OriginalPhotoPath = mCurrentPhotoPath;
                             Log.d("Dev:: Editing: ", OriginalPhotoPath);
 
@@ -139,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
                             mCurrentPhotoPath = newName;
                             photoGallery.set(currentPhotoIndex, mCurrentPhotoPath);
                             Log.d("Dev:: Renamed file", mCurrentPhotoPath);
+
+                             */
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -175,8 +183,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!photoGallery.isEmpty()) {
                     Log.d("Dev:: btnNext,", Integer.toString(currentPhotoIndex));
-                    displayPhoto(photoGallery.get(currentPhotoIndex));
-                    mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
+                    displayPhoto(photoGallery.get(currentPhotoIndex).filePath);
+                    mCurrentPhotoPath = photoGallery.get(currentPhotoIndex).filePath;
                 }
             }
         });
@@ -193,13 +201,14 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!photoGallery.isEmpty()) {
                     Log.d("Dev:: btnPrev,", Integer.toString(currentPhotoIndex));
-                    displayPhoto(photoGallery.get(currentPhotoIndex));
-                    mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
+                    displayPhoto(photoGallery.get(currentPhotoIndex).filePath);
+                    mCurrentPhotoPath = photoGallery.get(currentPhotoIndex).filePath;
                 }
             }
         });
     }
 
+    /*
     //Function to generate list of files in folder
     private ArrayList<String> populateGallery(Date minDate, Date maxDate) {
         File folder = new File(Environment.getExternalStorageDirectory()
@@ -213,13 +222,7 @@ public class MainActivity extends AppCompatActivity {
            for (File file : currentFiles) {
                if (!file.isDirectory()) {
 
-                   photoClass testPhoto = new photoClass(file.getPath());
-                   //String test = testPhoto.dateTime;
-                   String test = testPhoto.getCaption();
 
-                   testPhoto.setCaption("CHANGE CAPTION");
-
-                   test = testPhoto.getCaption();
 
                    populateGallery.add(new String(file.getPath()));
                }
@@ -227,14 +230,27 @@ public class MainActivity extends AppCompatActivity {
        }
     return populateGallery;
     }
+    */
 
-    /*
-    private ArrayList<photoClass> generatePhotos() {
+    private ArrayList<photoClass> generatePhotos(Date minDate, Date maxDate) {
+        File folder = new File(Environment.getExternalStorageDirectory()
+                .getAbsolutePath(), "/Android/data/com.example.photogallery/files/Pictures");
 
+        ArrayList<photoClass> generatePhotos = new ArrayList<photoClass>();
 
+        File[] currentFiles = folder.listFiles();
 
+        if(currentFiles != null) {
+            for (File file : currentFiles) {
+                if (!file.isDirectory()) {
+                    //If found photos, add to gallery
+                    generatePhotos.add(new photoClass(file.getPath()));
+                }
+            }
+        }
+        return generatePhotos;
     }
-*/
+
     private void displayPhoto(String path) {
         ImageView iv = (ImageView) findViewById(R.id.ivGallery);
         iv.setImageBitmap(BitmapFactory.decodeFile(path));
@@ -246,6 +262,11 @@ public class MainActivity extends AppCompatActivity {
         TextView captiontextrefresh = findViewById(R.id.captionText);
         TextView dateTextRefresh = findViewById(R.id.dateView);
 
+        //Get image metadata
+        captiontextrefresh.setText(photoGallery.get(currentPhotoIndex).getCaption());
+        dateTextRefresh.setText(photoGallery.get(currentPhotoIndex).dateTime.toString());
+
+        /* Old feature
         String date = path.substring(path.indexOf("_")+1, path.indexOf("_")+9);
         //String result = path.substring(path.indexOf("_") + 1, path.indexOf("_"));
 
@@ -255,6 +276,8 @@ public class MainActivity extends AppCompatActivity {
         String fileName_2 = path.substring(path.indexOf("_*")+2);
         fileName_2 = fileName_2.substring(0, fileName_2.length() - 4);
         captiontextrefresh.setText(fileName_2.trim());
+
+         */
     }
 
     // function to open new search activity
@@ -304,10 +327,16 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
             //Repopulate gallery
-            photoGallery = populateGallery(new Date(Long.MIN_VALUE), new Date(Long.MAX_VALUE));
+            //photoGallery = populateGallery(new Date(Long.MIN_VALUE), new Date(Long.MAX_VALUE));
 
             //TextView captiontextrefresh = findViewById(R.id.captionText);
             //captiontextrefresh.setText("Please Enter a Caption");
+
+            //Append to photo gallery
+            photoGallery.add(new photoClass(mCurrentPhotoPath));
+
+            //Set index to the most recent photo
+            currentPhotoIndex = photoGallery.size() - 1;
             displayPhoto(mCurrentPhotoPath);
 
         // execute this if from search activity
