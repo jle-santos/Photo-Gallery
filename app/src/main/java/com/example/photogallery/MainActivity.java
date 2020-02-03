@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         // Object Creation
         final Button btnCaption = findViewById(R.id.btnCaption);
         final Button btnSearch = findViewById(R.id.btnSearch);
+        final Button btnShare = findViewById(R.id.btnShare);
         final TextView caption = findViewById(R.id.captionText);
         final TextView dateCaption = findViewById(R.id.dateView);
 
@@ -72,9 +73,6 @@ public class MainActivity extends AppCompatActivity {
         //Generate gallery
         Date minDate = new Date(Long.MIN_VALUE);
         Date maxDate = new Date(Long.MAX_VALUE);
-
-//        photoGallery = populateGallery(minDate, maxDate);
-
 
         photoGallery = generatePhotos(minDate, maxDate);
 
@@ -169,6 +167,15 @@ public class MainActivity extends AppCompatActivity {
                 // print to terminal when button is pressed
                 Log.i("btnSearch", "has been pressed");
                 openSearchActivity();
+            }
+        });
+
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // print to terminal when button is pressed
+                Log.i("btnShare", "has been pressed");
+                openShareActivity();
             }
         });
 
@@ -289,11 +296,17 @@ public class MainActivity extends AppCompatActivity {
 
          */
     }
+    //function to open Share activity
+    public void openShareActivity() {
+        Intent intent = new Intent(this, shareActivity.class);
+        intent.putExtra(Picture_Location, mCurrentPhotoPath); //pass file location to new activity
+        startActivityForResult(intent, 404);
+    }
 
     // function to open new search activity
     public void openSearchActivity() {
         Intent intent = new Intent(this, searchActivity.class);
-        intent.putExtra(Picture_Location, mCurrentPhotoPath); //pass file location to new activity
+        //intent.putExtra(Picture_Location, mCurrentPhotoPath); //pass file location to new activity
         startActivityForResult(intent, 999);
     }
 

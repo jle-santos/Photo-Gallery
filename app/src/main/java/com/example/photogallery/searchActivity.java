@@ -22,8 +22,8 @@ public class searchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         // Get intent from main activity inorder to get the location of the picture taken
-        Intent intent = getIntent();
-        String filePath = intent.getStringExtra(MainActivity.Picture_Location);
+        //Intent intent = getIntent();
+        //String filePath = intent.getStringExtra(MainActivity.Picture_Location);
 
         //Removed photo preview for space
         //ImageView imPreview = findViewById(R.id.preview);
