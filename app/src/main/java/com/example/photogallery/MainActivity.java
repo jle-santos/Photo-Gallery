@@ -212,6 +212,15 @@ public class MainActivity extends AppCompatActivity {
        if(currentFiles != null) {
            for (File file : currentFiles) {
                if (!file.isDirectory()) {
+
+                   photoClass testPhoto = new photoClass(file.getPath());
+                   //String test = testPhoto.dateTime;
+                   String test = testPhoto.getCaption();
+
+                   testPhoto.setCaption("CHANGE CAPTION");
+
+                   test = testPhoto.getCaption();
+
                    populateGallery.add(new String(file.getPath()));
                }
            }
@@ -219,6 +228,13 @@ public class MainActivity extends AppCompatActivity {
     return populateGallery;
     }
 
+    /*
+    private ArrayList<photoClass> generatePhotos() {
+
+
+
+    }
+*/
     private void displayPhoto(String path) {
         ImageView iv = (ImageView) findViewById(R.id.ivGallery);
         iv.setImageBitmap(BitmapFactory.decodeFile(path));
@@ -272,11 +288,6 @@ public class MainActivity extends AppCompatActivity {
     // located in android/data/com.example.photogallery/files/pictures
     private File createImageFile() throws IOException {
         // Create an image file name
-
-        //Create photo object
-        photoClass photo = new photoClass("FileName Test");
-        String name = photo.fileName;
-
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
