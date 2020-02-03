@@ -82,7 +82,9 @@ public class photoGalleryTest {
         onView(withId(R.id.btnSearch)).perform(click());
 
         // Test the caption search
-        onView(withId(R.id.searchCaption)).perform(typeText("bag"), closeSoftKeyboard());
+        //onView(withId(R.id.searchCaption)).perform(typeText("bag"), closeSoftKeyboard());
+        onView(withId(R.id.minDateSearch)).perform(typeText("2018:03:04"), closeSoftKeyboard());
+        onView(withId(R.id.maxDateSearch)).perform(typeText("2019:03:04"), closeSoftKeyboard());
         onView(withId(R.id.btnSearch)).perform(click());
 
         // Change to a different photo

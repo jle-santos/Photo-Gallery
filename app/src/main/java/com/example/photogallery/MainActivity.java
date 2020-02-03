@@ -32,6 +32,7 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -232,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
     }
     */
 
-    private ArrayList<photoClass> generatePhotos(Date minDate, Date maxDate) {
+    private ArrayList<photoClass> generatePhotos(Date minDateQuery, Date maxDateQuery) {
         File folder = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath(), "/Android/data/com.example.photogallery/files/Pictures");
 
@@ -240,11 +241,20 @@ public class MainActivity extends AppCompatActivity {
 
         File[] currentFiles = folder.listFiles();
 
+        if(minDateQuery == null)
+            minDateQuery = new Date(Long.MIN_VALUE);
+
+        if(maxDateQuery == null)
+            maxDateQuery = new Date(Long.MAX_VALUE);
+
         if(currentFiles != null) {
             for (File file : currentFiles) {
                 if (!file.isDirectory()) {
                     //If found photos, add to gallery
-                    generatePhotos.add(new photoClass(file.getPath()));
+                    photoClass tempPhoto = new photoClass(file.getPath());
+
+                    if(tempPhoto.dateTime.after(minDateQuery) && tempPhoto.dateTime.before(maxDateQuery))
+                        generatePhotos.add(tempPhoto);
                 }
             }
         }
@@ -343,16 +353,43 @@ public class MainActivity extends AppCompatActivity {
         } else if (requestCode == 999 && resultCode == RESULT_OK) {
             //ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
 
+            String minDate = data.getStringExtra("minDate") + " 00:00:00";
+            String maxDate = data.getStringExtra("maxDate") + " 24:59:59";
+
+            Date startDate = null;
+            try {
+                startDate = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(minDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date endDate = null;
+            try {
+                endDate = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(maxDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            photoGallery = generatePhotos(startDate, endDate);
+
+            if (photoGallery.isEmpty()) {
+                Log.i("Dev:: Search yielded", "No photos found");
+                Toast.makeText(getApplicationContext(), "No Photos Found", Toast.LENGTH_SHORT).show();
+                photoGallery = generatePhotos(null, null);
+            }
+            else
+            {
+                Log.i("Dev::", "photos found");
+                //Print to screen how many photos found
+                Toast.makeText(getApplicationContext(), "Found " + photoGallery.size() + " photos!", Toast.LENGTH_SHORT).show();
+                Log.d("Dev::: Search yielded:", Integer.toString(photoGallery.size()));
+                currentPhotoIndex = photoGallery.size() - 1 ;
+                mCurrentPhotoPath = photoGallery.get(currentPhotoIndex).filePath;
+                displayPhoto(mCurrentPhotoPath);
+            }
+
+
+
             /*
-            String minDate = data.getStringExtra("minDate");
-            String maxDate = data.getStringExtra("maxDate");
-
-            Date startDate = new SimpleDateFormat("yyyyMMdd_HHmmss").parse(minDate);
-            Date endDate = new SimpleDateFormat("yyyyMMdd_HHmmss").parse(maxDate);
-
-            photoGallery = populateGallery(startDate, endDate);
-            */
-
             TextView captiontextrefresh = findViewById(R.id.captionText);
 
             String filePath = data.getStringExtra("Path");
@@ -369,6 +406,8 @@ public class MainActivity extends AppCompatActivity {
 
             mCurrentPhotoPath = filePath;
             displayPhoto(mCurrentPhotoPath);
+
+             */
         }
     }
 

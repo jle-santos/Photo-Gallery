@@ -24,8 +24,10 @@ public class searchActivity extends AppCompatActivity {
         // Get intent from main activity inorder to get the location of the picture taken
         Intent intent = getIntent();
         String filePath = intent.getStringExtra(MainActivity.Picture_Location);
-        ImageView imPreview = findViewById(R.id.preview);
-        imPreview.setImageBitmap(BitmapFactory.decodeFile(filePath));
+
+        //Removed photo preview for space
+        //ImageView imPreview = findViewById(R.id.preview);
+        //imPreview.setImageBitmap(BitmapFactory.decodeFile(filePath));
 
         // Create various object on the xml file
         final Button btnCancel = findViewById(R.id.btnCancel);
@@ -33,8 +35,8 @@ public class searchActivity extends AppCompatActivity {
         final EditText captionSearch = findViewById(R.id.searchCaption);
 
         //Date search
-        final EditText minDate = findViewById(R.id.editMinDate);
-        final EditText maxDate = findViewById(R.id.editMaxDate);
+        final EditText minDate = findViewById(R.id.minDateSearch);
+        final EditText maxDate = findViewById(R.id.maxDateSearch);
 
 
         // close activity
@@ -56,18 +58,16 @@ public class searchActivity extends AppCompatActivity {
                 Intent path = new Intent();
 
                 String captionQuery = captionSearch.getText().toString();
-
-                /*
                 String dateMinQuery = minDate.getText().toString();
                 String dateMaxQuery = maxDate.getText().toString();
-                */
+
 
                 // Check something is entered in the search boxes
-                if (captionQuery.isEmpty() && captionQuery.isEmpty()) { // if empty box
-                    Toast.makeText(getApplicationContext(), "Please finish query", Toast.LENGTH_SHORT).show();
-                    /*
+                if (captionQuery.isEmpty()) { // if empty box
+                    //Toast.makeText(getApplicationContext(), "Please finish query", Toast.LENGTH_SHORT).show();
+
                     if(dateMinQuery.isEmpty() && dateMaxQuery.isEmpty()) {
-                        //Toast.makeText(getApplicationContext(), "Please finish query either CAPTION or DATE", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Please finish query either CAPTION or DATE", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         path.putExtra("minDate", dateMinQuery);
@@ -75,10 +75,9 @@ public class searchActivity extends AppCompatActivity {
                         setResult(RESULT_OK, path);
                         finish();
                     }
-                    */
-
                 }
                 else { // if box not empty
+                    /*
                     File dir = new File("/storage/emulated/0/Android/data/com.example.photogallery/files/Pictures/");
                     File[] directoryListing = dir.listFiles();
                     if (directoryListing != null) {
@@ -95,7 +94,7 @@ public class searchActivity extends AppCompatActivity {
                         Log.i("Search Button:", "File path is incorrect");
                         Toast.makeText(getApplicationContext(), "Directory is empty", Toast.LENGTH_SHORT).show();
                     }
-
+                    */
 
                 }
 
