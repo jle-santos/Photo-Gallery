@@ -77,6 +77,10 @@ public class searchActivity extends AppCompatActivity {
                     }
                 }
                 else { // if box not empty
+
+
+
+
                     /*
                     File dir = new File("/storage/emulated/0/Android/data/com.example.photogallery/files/Pictures/");
                     File[] directoryListing = dir.listFiles();
@@ -95,11 +99,7 @@ public class searchActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Directory is empty", Toast.LENGTH_SHORT).show();
                     }
                     */
-
                 }
-
-
-
             }
         });
 

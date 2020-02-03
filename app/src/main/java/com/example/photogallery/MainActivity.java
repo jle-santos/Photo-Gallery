@@ -351,7 +351,6 @@ public class MainActivity extends AppCompatActivity {
 
         // execute this if from search activity
         } else if (requestCode == 999 && resultCode == RESULT_OK) {
-            //ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
 
             String minDate = data.getStringExtra("minDate") + " 00:00:00";
             String maxDate = data.getStringExtra("maxDate") + " 24:59:59";
