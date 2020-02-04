@@ -27,6 +27,7 @@ public class shareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_share);
 
         final Button btnTwitter = findViewById(R.id.btnTwitter);
+        final Button btnDiscord = findViewById(R.id.btnDiscord);
 
         Intent intent = getIntent();
         filePath = intent.getStringExtra(MainActivity.Picture_Location);
@@ -40,7 +41,8 @@ public class shareActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("Dev::", "Sharing to Messenger");
-
+                shareImage("com.facebook.orca");
+                /*
                 File file = new File(filePath);
 
                 String packageName = "com.facebook.orca";
@@ -66,16 +68,50 @@ public class shareActivity extends AppCompatActivity {
                 }
                 catch (android.content.ActivityNotFoundException ex) {
                     Toast.makeText(getApplicationContext(), "No Application Found", Toast.LENGTH_SHORT).show();
-                }
-
-
-
+                }*/
             }
 
 
 
         });
 
+        btnDiscord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Dev::", "Sharing to Discord");
+                shareImage("com.discord");
 
+            }
+
+
+
+        });
     }
+
+
+    private void shareImage(String namePackage) {
+        File file = new File(filePath);
+
+        Uri imageUri = FileProvider.getUriForFile(getApplicationContext(),
+                "com.example.photogallery.fileprovider",
+                file);
+
+        Intent sendIntent = new Intent();
+        sendIntent.setType("image/*");
+        sendIntent.setAction(Intent.ACTION_SEND);
+        //sendIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        sendIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+
+        //sendIntent.putExtra(Intent.EXTRA_SUBJECT, "SENT FROM MY ANDROID");
+        //sendIntent.putExtra(Intent.EXTRA_TEXT, "TEST FROM ANDROID");
+        //sendIntent.setType("text/plain");
+
+        sendIntent.setPackage(namePackage);
+
+        try {
+            startActivity(sendIntent);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getApplicationContext(), "No Application Found", Toast.LENGTH_SHORT).show();
+            }
+        }
 }

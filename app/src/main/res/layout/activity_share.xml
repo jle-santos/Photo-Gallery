@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".shareActivity">
 
+    <Button
+        android:id="@+id/btnDiscord"
+        android:layout_width="125dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#5F5BD8"
+        android:fontFamily="sans-serif"
+        android:text="DISCORD"
+        android:textColor="#FFFFFF"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/btnTwitter"
+        app:layout_constraintStart_toStartOf="@+id/btnTwitter"
+        app:layout_constraintTop_toBottomOf="@+id/btnTwitter" />
+
     <ImageView
         android:id="@+id/ivShare"
         android:layout_width="221dp"
@@ -49,8 +64,8 @@
 
     <Button
         android:id="@+id/btnTwitter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="52dp"
         android:layout_marginTop="15dp"
         android:backgroundTint="#4779EE"
         android:fontFamily="sans-serif"
