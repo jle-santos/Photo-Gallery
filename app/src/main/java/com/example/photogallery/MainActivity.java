@@ -305,13 +305,19 @@ public class MainActivity extends AppCompatActivity {
 
             Location location = gps.getLocation();
 
-            String longitude = (Location.convert(location.getLongitude(), Location.FORMAT_DEGREES));
-            String latitude = (Location.convert(location.getLatitude(), Location.FORMAT_DEGREES));
+            if(location != null) {
+                String longitude = (Location.convert(location.getLongitude(), Location.FORMAT_DEGREES));
+                String latitude = (Location.convert(location.getLatitude(), Location.FORMAT_DEGREES));
 
-            photoGallery.get(currentPhotoIndex).setCoordinates(latitude, longitude);
+                photoGallery.get(currentPhotoIndex).setCoordinates(latitude, longitude);
 
-            String tempLong = photoGallery.get(currentPhotoIndex).getLongitude();
-            String tempLat = photoGallery.get(currentPhotoIndex).getLatitude();
+                Log.i("Dev:: ", "Lat: " + photoGallery.get(currentPhotoIndex).getLatitude() +
+                        " Lon: " + photoGallery.get(currentPhotoIndex).getLongitude());
+            }
+            else
+                Log.i("Dev::", "No GPS signal");
+            //String tempLong = ;
+            //String tempLat = ;
 
             displayPhoto(mCurrentPhotoPath);
 
