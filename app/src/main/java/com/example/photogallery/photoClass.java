@@ -1,7 +1,6 @@
 package com.example.photogallery;
 
-import android.location.Location;
-import android.support.media.ExifInterface;
+import android.media.ExifInterface;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -65,42 +64,105 @@ public class photoClass {
         return caption;
     }
 
-    public void setCoordinates(Location location) {
+    /*
+    public void setCoordinates(String latitude, String longitude) {
         try {
             ExifInterface exif = new ExifInterface(filePath);
-            exif.
-            //exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, longitude);
+            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, latitude);
+            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, longitude);
             exif.saveAttributes();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public String getLatitude() {
-        String lat = "";
+        String coord = "";
 
         try {
             ExifInterface exif = new ExifInterface(filePath);
-            lat = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
+            String coordLine = exif.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION);
+            coord = coordLine.substring(0, coordLine.indexOf("_"));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return lat;
+        return coord;
     }
 
     public String getLongitude() {
-        String lat = "";
+        String coord = "";
 
         try {
             ExifInterface exif = new ExifInterface(filePath);
-            lat = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
+            String coordLine = exif.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION);
+            coord = coordLine.substring(coordLine.indexOf("_")+1, coordLine.length());
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return lat;
+        return coord;
     }
+
+    public void setCoordinates(String latitude, String longitude) {
+        /*
+        double lat = location.getLatitude();
+        double alat = Math.abs(lat);
+        String dms = Location.convert(alat, Location.FORMAT_SECONDS);
+        String[] splits = dms.split(":");
+        String[] secnds = (splits[2]).split("\\.");
+        String seconds;
+        if(secnds.length==0)
+        {
+            seconds = splits[2];
+        }
+        else
+        {
+            seconds = secnds[0];
+        }
+
+        String latitudeStr = splits[0] + "/1," + splits[1] + "/1," + seconds + "/1";
+
+        double lon = location.getLongitude();
+        double alon = Math.abs(lon);
+
+        dms = Location.convert(alon, Location.FORMAT_SECONDS);
+        splits = dms.split(":");
+        secnds = (splits[2]).split("\\.");
+
+        if(secnds.length==0)
+        {
+            seconds = splits[2];
+        }
+        else
+        {
+            seconds = secnds[0];
+        }
+        String longitudeStr = splits[0] + "/1," + splits[1] + "/1," + seconds + "/1";
+        */
+
+
+        String coordinates = latitude + "_" + longitude;
+
+        try {
+            ExifInterface exif = new ExifInterface(filePath);
+            exif.setAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION, coordinates);
+            //exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, latitude);
+            //exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, lat>0?"N":"S");
+
+            //exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, longitude);
+            //exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, lon>0?"E":"W");
+
+            exif.saveAttributes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+    }
+
 }

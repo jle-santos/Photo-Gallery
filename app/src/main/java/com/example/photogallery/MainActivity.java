@@ -290,6 +290,7 @@ public class MainActivity extends AppCompatActivity {
         return image;
     }
 
+
     // Puts image from camera onto the imageview object
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -303,14 +304,14 @@ public class MainActivity extends AppCompatActivity {
 
 
             Location location = gps.getLocation();
-            /*
-            String longitude = (Location.convert(location.getLongitude(), Location.FORMAT_SECONDS));
-            String latitude = (Location.convert(location.getLatitude(), Location.FORMAT_SECONDS));
-            */
-            photoGallery.get(currentPhotoIndex).setCoordinates(location);
+
+            String longitude = (Location.convert(location.getLongitude(), Location.FORMAT_DEGREES));
+            String latitude = (Location.convert(location.getLatitude(), Location.FORMAT_DEGREES));
+
+            photoGallery.get(currentPhotoIndex).setCoordinates(latitude, longitude);
 
             String tempLong = photoGallery.get(currentPhotoIndex).getLongitude();
-
+            String tempLat = photoGallery.get(currentPhotoIndex).getLatitude();
 
             displayPhoto(mCurrentPhotoPath);
 
