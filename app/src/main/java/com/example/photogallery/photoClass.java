@@ -77,12 +77,13 @@ public class photoClass {
     }*/
 
     public String getLatitude() {
-        String coord = "";
+        String coord = "N/A";
 
         try {
             ExifInterface exif = new ExifInterface(filePath);
             String coordLine = exif.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION);
-            coord = coordLine.substring(0, coordLine.indexOf("_"));
+            if(coordLine != null)
+                coord = coordLine.substring(0, coordLine.indexOf("_"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -92,12 +93,14 @@ public class photoClass {
     }
 
     public String getLongitude() {
-        String coord = "";
+        String coord = "N/A";
 
         try {
             ExifInterface exif = new ExifInterface(filePath);
             String coordLine = exif.getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION);
-            coord = coordLine.substring(coordLine.indexOf("_")+1, coordLine.length());
+
+            if(coordLine != null)
+                coord = coordLine.substring(coordLine.indexOf("_")+1, coordLine.length());
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         final Button btnSearch = findViewById(R.id.btnSearch);
         final Button btnShare = findViewById(R.id.btnShare);
         final TextView caption = findViewById(R.id.captionText);
-        final TextView dateCaption = findViewById(R.id.dateView);
 
         final Button btnNext = findViewById(R.id.btnNext);
         final Button btnPrev = findViewById(R.id.btnPrev);
@@ -235,6 +234,11 @@ public class MainActivity extends AppCompatActivity {
     private void writeCaption(String path) {
         TextView captiontextrefresh = findViewById(R.id.captionText);
         TextView dateTextRefresh = findViewById(R.id.dateView);
+        TextView latRefresh = findViewById(R.id.textView5);
+        TextView lonRefresh = findViewById(R.id.longView);
+
+        latRefresh.setText(photoGallery.get(currentPhotoIndex).getLatitude());
+        lonRefresh.setText(photoGallery.get(currentPhotoIndex).getLongitude());
 
         //Get image metadata
         captiontextrefresh.setText(photoGallery.get(currentPhotoIndex).getCaption());
@@ -301,7 +305,6 @@ public class MainActivity extends AppCompatActivity {
 
             //Set index to the most recent photo
             currentPhotoIndex = photoGallery.size() - 1;
-
 
             Location location = gps.getLocation();
 

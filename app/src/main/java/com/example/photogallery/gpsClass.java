@@ -1,7 +1,6 @@
 package com.example.photogallery;
 
 
-import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +26,7 @@ public class gpsClass extends Service {
 
     public gpsClass(Context mContext) {
         this.mContext = mContext;
+        getLocation();
     }
 
     public Location getLocation() {
@@ -67,11 +67,13 @@ public class gpsClass extends Service {
             if(gpsStatus) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                Log.i("Dev::", "GPS PRovider");
                 return location;
             }
             else if(networkStatus) {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
                 Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                Log.i("Dev::", "NETWORK Provider");
                 return location;
             }
             else {

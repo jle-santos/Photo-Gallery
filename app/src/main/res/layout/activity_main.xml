@@ -20,6 +20,18 @@
         android:maxWidth="42dp"
         android:scaleType="fitXY" />
 
+    <TextView
+        android:id="@+id/latTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/longTitle"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="3dp"
+        android:text="LAT:"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF" />
+
     <Button
         android:id="@+id/btnSnap"
         android:layout_width="101dp"
@@ -124,5 +136,37 @@
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="-3dp"
         android:text="SHARE" />
+
+    <TextView
+        android:id="@+id/longTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivGallery"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="10dp"
+        android:text="LON:"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/longView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivGallery"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toEndOf="@+id/longTitle"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/longView"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toEndOf="@+id/longTitle"
+        android:text="N/A"
+        android:textColor="#FFFFFF" />
 
 </RelativeLayout>
