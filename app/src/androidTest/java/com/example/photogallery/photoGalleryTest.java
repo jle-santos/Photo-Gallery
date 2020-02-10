@@ -83,8 +83,9 @@ public class photoGalleryTest {
 
         // Test the caption search
         //onView(withId(R.id.searchCaption)).perform(typeText("bag"), closeSoftKeyboard());
-        onView(withId(R.id.minDateSearch)).perform(typeText("2018:03:04"), closeSoftKeyboard());
-        onView(withId(R.id.maxDateSearch)).perform(typeText("2019:03:04"), closeSoftKeyboard());
+        onView(withId(R.id.latitudeSearch)).perform(typeText("43"), closeSoftKeyboard());
+        onView(withId(R.id.longitudeSearch)).perform(typeText("-122"), closeSoftKeyboard());
+        onView(withId(R.id.radiusSearch)).perform(typeText("5"), closeSoftKeyboard());
         onView(withId(R.id.btnSearch)).perform(click());
 
         // Change to a different photo

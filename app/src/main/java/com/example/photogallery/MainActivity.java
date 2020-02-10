@@ -136,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
                     });
                     builder.show();
                 }
-
             }
         });
 
@@ -196,12 +195,50 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private ArrayList<photoClass> filterPhotoLocations(ArrayList<photoClass> photoGallery, String lat, String lon, String rad) {
+        Double latitude = Double.parseDouble(lat);
+        Double longitude = Double.parseDouble(lon);
+        Double radius = Double.parseDouble(rad);
+
+        Double latMin = latitude - radius;
+        Double latMax = latitude + radius;
+
+        Double lonMin = longitude - radius;
+        Double lonMax = longitude + radius;
+
+        for (int index = photoGallery.size() - 1; index >= 0; index--) {
+
+            photoClass photo = photoGallery.get(index);
+
+            if(photo.getLatitude().equals("N/A") && photo.getLongitude().equals("N/A")) {
+                //Invalid coordinates
+                //Remove photo
+                photoGallery.remove(index);
+            }
+            else {
+                Double latPhoto = Double.parseDouble(photo.getLatitude());
+                Double lonPhoto = Double.parseDouble(photo.getLongitude());
+
+                if(latPhoto > latMin && latPhoto < latMax &&
+                        lonPhoto > lonMin && lonPhoto < lonMax) {
+                    //Photo within filter
+                }
+                else {
+                    //Photo not within filter
+                    photoGallery.remove(index);
+                }
+            }
+        }
+
+        return photoGallery;
+    }
+
+
     private ArrayList<photoClass> generatePhotos(Date minDateQuery, Date maxDateQuery) {
         File folder = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath(), "/Android/data/com.example.photogallery/files/Pictures");
 
         ArrayList<photoClass> generatePhotos = new ArrayList<photoClass>();
-
         File[] currentFiles = folder.listFiles();
 
         if(minDateQuery == null)
@@ -227,7 +264,6 @@ public class MainActivity extends AppCompatActivity {
     private void displayPhoto(String path) {
         ImageView iv = (ImageView) findViewById(R.id.ivGallery);
         iv.setImageBitmap(BitmapFactory.decodeFile(path));
-
         writeCaption(path);
     }
 
@@ -329,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
 
             String searchType = data.getStringExtra("Type");
 
-
+            if(searchType.equals("Date")) {
                 String minDate = data.getStringExtra("minDate") + " 00:00:00";
                 String maxDate = data.getStringExtra("maxDate") + " 24:59:59";
 
@@ -347,7 +383,15 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 photoGallery = generatePhotos(startDate, endDate);
+            }
+            else if(searchType.equals("Location")) {
+                String latitude = data.getStringExtra("latitude");
+                String longitude = data.getStringExtra("longitude");
+                String radius = data.getStringExtra("radius");
 
+                photoGallery = filterPhotoLocations(photoGallery, latitude, longitude, radius);
+
+            }
 
             if (photoGallery.isEmpty()) {
                 Log.i("Dev:: Search yielded", "No photos found");

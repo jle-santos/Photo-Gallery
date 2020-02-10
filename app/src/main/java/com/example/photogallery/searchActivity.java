@@ -38,6 +38,9 @@ public class searchActivity extends AppCompatActivity {
         final EditText minDate = findViewById(R.id.minDateSearch);
         final EditText maxDate = findViewById(R.id.maxDateSearch);
 
+        final EditText latitudeSearch = findViewById(R.id.latitudeSearch);
+        final EditText longitudeSearch = findViewById(R.id.longitudeSearch);
+        final EditText radiusSearch = findViewById(R.id.radiusSearch);
 
         // close activity
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -61,46 +64,37 @@ public class searchActivity extends AppCompatActivity {
                 String dateMinQuery = minDate.getText().toString();
                 String dateMaxQuery = maxDate.getText().toString();
 
-                // Check something is entered in the search boxes
-                if (captionQuery.isEmpty()) { // if empty box
-                    //Toast.makeText(getApplicationContext(), "Please finish query", Toast.LENGTH_SHORT).show();
+                String latitudeQuery = latitudeSearch.getText().toString();
+                String longitudeQuery = longitudeSearch.getText().toString();
+                String radiusQuery = radiusSearch.getText().toString();
 
-                    if(dateMinQuery.isEmpty() && dateMaxQuery.isEmpty()) {
-                        Toast.makeText(getApplicationContext(), "Please finish query either CAPTION or DATE", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                // Check something is entered in the search boxes
+                //Check if no search terms
+                if(captionQuery.isEmpty() && dateMinQuery.isEmpty() && dateMaxQuery.isEmpty() &&
+                    radiusQuery.isEmpty() && latitudeQuery.isEmpty() && longitudeQuery.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please enter search queries: CAPTION, DATE, LOCATION", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    //Check if dates are entered
+                    if(!dateMinQuery.isEmpty() || !dateMaxQuery.isEmpty()) {
                         path.putExtra("minDate", dateMinQuery);
                         path.putExtra("maxDate", dateMaxQuery);
                         path.putExtra("Type", "Date");
                         setResult(RESULT_OK, path);
                         finish();
                     }
-                }
-                else { // if box not empty
-
-
-
-
-                    /*
-                    File dir = new File("/storage/emulated/0/Android/data/com.example.photogallery/files/Pictures/");
-                    File[] directoryListing = dir.listFiles();
-                    if (directoryListing != null) {
-                        for (File child : directoryListing) {
-                            // check for date in file name
-                            if (child.getName().contains(captionQuery)) {
-                                path.putExtra("Path", child.getAbsolutePath());
-                                path.putExtra("Filename", child.getName());
-                                setResult(RESULT_OK, path);
-                                finish(); //EXIT when picture is found
-                            }
-                        }
-                    } else {
-                        Log.i("Search Button:", "File path is incorrect");
-                        Toast.makeText(getApplicationContext(), "Directory is empty", Toast.LENGTH_SHORT).show();
+                    //If dates are empty, check latitude
+                    else if(!latitudeQuery.isEmpty() && !longitudeQuery.isEmpty() && !radiusQuery.isEmpty()) {
+                        path.putExtra("latitude", latitudeQuery);
+                        path.putExtra("longitude", longitudeQuery);
+                        path.putExtra("radius", radiusQuery);
+                        path.putExtra("Type", "Location");
+                        setResult(RESULT_OK, path);
+                        finish();
                     }
-                    */
                 }
-            }
+
+                }
         });
 
     }
