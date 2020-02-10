@@ -7,6 +7,20 @@
     tools:context=".searchActivity">
 
     <TextView
+        android:id="@+id/dateFormat3"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="25dp"
+        android:text="Format: Decimal Degrees"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/latText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/searchCaption"
+        app:layout_constraintTop_toBottomOf="@+id/maxDateSearch"
+        />
+
+    <TextView
         android:id="@+id/caption_handle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,7 +63,7 @@
         android:id="@+id/btnSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="450dp"
         android:layout_marginEnd="100dp"
         android:text="Search"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="450dp"
         android:text="Cancel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -84,6 +98,36 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/dateTextMin"
         app:layout_constraintTop_toBottomOf="@+id/dateTextMin" />
+
+    <TextView
+        android:id="@+id/latText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:text="LATITUDE:"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/dateTextMin"
+        app:layout_constraintTop_toBottomOf="@+id/dateTextMin" />
+
+    <TextView
+        android:id="@+id/longText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="LONGITUDE:"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/dateTextMin"
+        app:layout_constraintTop_toBottomOf="@+id/latText" />
+
+    <TextView
+        android:id="@+id/radText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="RADIUS:"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/dateTextMin"
+        app:layout_constraintTop_toBottomOf="@+id/longText" />
 
     <TextView
         android:id="@+id/dateFormat"
@@ -120,5 +164,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/minDateSearch"
         app:layout_constraintTop_toTopOf="@+id/dateTextMax" />
+
+    <EditText
+        android:id="@+id/latitudeSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintEnd_toEndOf="@+id/maxDateSearch"
+        app:layout_constraintTop_toTopOf="@+id/latText" />
+
+    <EditText
+        android:id="@+id/longitudeSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintEnd_toEndOf="@+id/maxDateSearch"
+        app:layout_constraintTop_toTopOf="@+id/longText" />
+
+    <EditText
+        android:id="@+id/radiusSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintEnd_toEndOf="@+id/maxDateSearch"
+        app:layout_constraintTop_toTopOf="@+id/radText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

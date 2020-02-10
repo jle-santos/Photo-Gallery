@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
     private void writeCaption(String path) {
         TextView captiontextrefresh = findViewById(R.id.captionText);
         TextView dateTextRefresh = findViewById(R.id.dateView);
-        TextView latRefresh = findViewById(R.id.textView5);
+        TextView latRefresh = findViewById(R.id.latView);
         TextView lonRefresh = findViewById(R.id.longView);
 
         latRefresh.setText(photoGallery.get(currentPhotoIndex).getLatitude());
@@ -327,23 +327,27 @@ public class MainActivity extends AppCompatActivity {
         // execute this if from search activity
         } else if (requestCode == 999 && resultCode == RESULT_OK) {
 
-            String minDate = data.getStringExtra("minDate") + " 00:00:00";
-            String maxDate = data.getStringExtra("maxDate") + " 24:59:59";
+            String searchType = data.getStringExtra("Type");
 
-            Date startDate = null;
-            try {
-                startDate = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(minDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Date endDate = null;
-            try {
-                endDate = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(maxDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
-            photoGallery = generatePhotos(startDate, endDate);
+                String minDate = data.getStringExtra("minDate") + " 00:00:00";
+                String maxDate = data.getStringExtra("maxDate") + " 24:59:59";
+
+                Date startDate = null;
+                try {
+                    startDate = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(minDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Date endDate = null;
+                try {
+                    endDate = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(maxDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                photoGallery = generatePhotos(startDate, endDate);
+
 
             if (photoGallery.isEmpty()) {
                 Log.i("Dev:: Search yielded", "No photos found");

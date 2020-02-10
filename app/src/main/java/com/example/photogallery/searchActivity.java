@@ -61,7 +61,6 @@ public class searchActivity extends AppCompatActivity {
                 String dateMinQuery = minDate.getText().toString();
                 String dateMaxQuery = maxDate.getText().toString();
 
-
                 // Check something is entered in the search boxes
                 if (captionQuery.isEmpty()) { // if empty box
                     //Toast.makeText(getApplicationContext(), "Please finish query", Toast.LENGTH_SHORT).show();
@@ -72,6 +71,7 @@ public class searchActivity extends AppCompatActivity {
                     else {
                         path.putExtra("minDate", dateMinQuery);
                         path.putExtra("maxDate", dateMaxQuery);
+                        path.putExtra("Type", "Date");
                         setResult(RESULT_OK, path);
                         finish();
                     }

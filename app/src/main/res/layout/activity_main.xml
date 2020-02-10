@@ -159,14 +159,13 @@
         android:textColor="#FFFFFF" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/latView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/longView"
+        android:layout_above="@+id/longTitle"
         android:layout_marginStart="3dp"
         android:layout_marginBottom="5dp"
         android:layout_toEndOf="@+id/longTitle"
-        android:text="N/A"
         android:textColor="#FFFFFF" />
 
 </RelativeLayout>

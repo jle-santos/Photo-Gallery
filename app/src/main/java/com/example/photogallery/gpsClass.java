@@ -26,7 +26,7 @@ public class gpsClass extends Service {
 
     public gpsClass(Context mContext) {
         this.mContext = mContext;
-        getLocation();
+        //getLocation();
     }
 
     public Location getLocation() {
