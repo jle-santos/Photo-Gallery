@@ -1,9 +1,8 @@
 package com.example.photogallery;
 
-import android.media.ExifInterface;
-import android.util.Log;
+import android.location.Location;
+import android.support.media.ExifInterface;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,6 +11,9 @@ import java.util.Date;
 public class photoClass {
     String filePath;
     Date dateTime;
+
+    String latitude;
+    String longitude;
 
     public photoClass(String photoPath) {
         try {
@@ -27,7 +29,7 @@ public class photoClass {
             }
 
             //Check if no caption
-            if(exif.getAttribute(ExifInterface.TAG_USER_COMMENT) == null)
+            if (exif.getAttribute(ExifInterface.TAG_USER_COMMENT) == null)
                 exif.setAttribute(ExifInterface.TAG_USER_COMMENT, "No Caption");
 
             exif.saveAttributes();
@@ -61,5 +63,44 @@ public class photoClass {
         }
 
         return caption;
+    }
+
+    public void setCoordinates(Location location) {
+        try {
+            ExifInterface exif = new ExifInterface(filePath);
+            exif.
+            //exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, longitude);
+            exif.saveAttributes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getLatitude() {
+        String lat = "";
+
+        try {
+            ExifInterface exif = new ExifInterface(filePath);
+            lat = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return lat;
+    }
+
+    public String getLongitude() {
+        String lat = "";
+
+        try {
+            ExifInterface exif = new ExifInterface(filePath);
+            lat = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return lat;
     }
 }
