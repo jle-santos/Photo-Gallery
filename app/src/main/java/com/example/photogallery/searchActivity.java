@@ -2,6 +2,7 @@ package com.example.photogallery;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.File;
 
 public class searchActivity extends AppCompatActivity {
+
+    //Location
+    private gpsClass gpsSearch = new gpsClass(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,9 @@ public class searchActivity extends AppCompatActivity {
         // Create various object on the xml file
         final Button btnCancel = findViewById(R.id.btnCancel);
         final Button btnSearch = findViewById(R.id.btnSearch);
+
+        final Button btnLocate = findViewById(R.id.btnLocate);
+
         final EditText captionSearch = findViewById(R.id.searchCaption);
 
         //Date search
@@ -46,11 +53,25 @@ public class searchActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Cancel:", "button has been pressed... Termniating");
+                Log.i("Cancel:", "button has been pressed... Terminating");
                 finish();
             }
         });
 
+        //Get location
+        btnLocate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Dev::", "Getting location");
+
+                Location location = gpsSearch.getLocation();
+
+                latitudeSearch.setText(Double.toString(location.getLatitude()));
+                longitudeSearch.setText(Double.toString(location.getLongitude()));
+
+                //Toast.makeText(getApplicationContext(), "Lat:" + location.getLatitude() + " | Lon: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // On search find the file
         btnSearch.setOnClickListener(new View.OnClickListener() {
