@@ -188,6 +188,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="In degrees"
         android:inputType="numberSigned"
         app:layout_constraintEnd_toEndOf="@+id/maxDateSearch"
         app:layout_constraintTop_toTopOf="@+id/radText" />
