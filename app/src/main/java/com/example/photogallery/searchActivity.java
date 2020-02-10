@@ -2,6 +2,7 @@ package com.example.photogallery;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.File;
 
 public class searchActivity extends AppCompatActivity {
+
+    //Location
+    private gpsClass gpsSearch = new gpsClass(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,22 +36,42 @@ public class searchActivity extends AppCompatActivity {
         // Create various object on the xml file
         final Button btnCancel = findViewById(R.id.btnCancel);
         final Button btnSearch = findViewById(R.id.btnSearch);
+
+        final Button btnLocate = findViewById(R.id.btnLocate);
+
         final EditText captionSearch = findViewById(R.id.searchCaption);
 
         //Date search
         final EditText minDate = findViewById(R.id.minDateSearch);
         final EditText maxDate = findViewById(R.id.maxDateSearch);
 
+        final EditText latitudeSearch = findViewById(R.id.latitudeSearch);
+        final EditText longitudeSearch = findViewById(R.id.longitudeSearch);
+        final EditText radiusSearch = findViewById(R.id.radiusSearch);
 
         // close activity
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Cancel:", "button has been pressed... Termniating");
+                Log.i("Cancel:", "button has been pressed... Terminating");
                 finish();
             }
         });
 
+        //Get location
+        btnLocate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Dev::", "Getting location");
+
+                Location location = gpsSearch.getLocation();
+
+                latitudeSearch.setText(Double.toString(location.getLatitude()));
+                longitudeSearch.setText(Double.toString(location.getLongitude()));
+
+                //Toast.makeText(getApplicationContext(), "Lat:" + location.getLatitude() + " | Lon: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // On search find the file
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -61,46 +85,37 @@ public class searchActivity extends AppCompatActivity {
                 String dateMinQuery = minDate.getText().toString();
                 String dateMaxQuery = maxDate.getText().toString();
 
+                String latitudeQuery = latitudeSearch.getText().toString();
+                String longitudeQuery = longitudeSearch.getText().toString();
+                String radiusQuery = radiusSearch.getText().toString();
 
                 // Check something is entered in the search boxes
-                if (captionQuery.isEmpty()) { // if empty box
-                    //Toast.makeText(getApplicationContext(), "Please finish query", Toast.LENGTH_SHORT).show();
-
-                    if(dateMinQuery.isEmpty() && dateMaxQuery.isEmpty()) {
-                        Toast.makeText(getApplicationContext(), "Please finish query either CAPTION or DATE", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                //Check if no search terms
+                if(captionQuery.isEmpty() && dateMinQuery.isEmpty() && dateMaxQuery.isEmpty() &&
+                    radiusQuery.isEmpty() && latitudeQuery.isEmpty() && longitudeQuery.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please enter search queries: CAPTION, DATE, LOCATION", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    //Check if dates are entered
+                    if(!dateMinQuery.isEmpty() || !dateMaxQuery.isEmpty()) {
                         path.putExtra("minDate", dateMinQuery);
                         path.putExtra("maxDate", dateMaxQuery);
+                        path.putExtra("Type", "Date");
+                        setResult(RESULT_OK, path);
+                        finish();
+                    }
+                    //If dates are empty, check latitude
+                    else if(!latitudeQuery.isEmpty() && !longitudeQuery.isEmpty() && !radiusQuery.isEmpty()) {
+                        path.putExtra("latitude", latitudeQuery);
+                        path.putExtra("longitude", longitudeQuery);
+                        path.putExtra("radius", radiusQuery);
+                        path.putExtra("Type", "Location");
                         setResult(RESULT_OK, path);
                         finish();
                     }
                 }
-                else { // if box not empty
 
-
-
-
-                    /*
-                    File dir = new File("/storage/emulated/0/Android/data/com.example.photogallery/files/Pictures/");
-                    File[] directoryListing = dir.listFiles();
-                    if (directoryListing != null) {
-                        for (File child : directoryListing) {
-                            // check for date in file name
-                            if (child.getName().contains(captionQuery)) {
-                                path.putExtra("Path", child.getAbsolutePath());
-                                path.putExtra("Filename", child.getName());
-                                setResult(RESULT_OK, path);
-                                finish(); //EXIT when picture is found
-                            }
-                        }
-                    } else {
-                        Log.i("Search Button:", "File path is incorrect");
-                        Toast.makeText(getApplicationContext(), "Directory is empty", Toast.LENGTH_SHORT).show();
-                    }
-                    */
                 }
-            }
         });
 
     }
