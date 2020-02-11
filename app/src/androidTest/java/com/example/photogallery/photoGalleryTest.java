@@ -80,17 +80,33 @@ public class photoGalleryTest {
 
         // Check the search feature
         onView(withId(R.id.btnSearch)).perform(click());
+        //onView(withId(R.id.searchCaption)).perform(typeText("computer"), closeSoftKeyboard());
 
-        // Test the caption search
-        //onView(withId(R.id.searchCaption)).perform(typeText("bag"), closeSoftKeyboard());
+        // Change to a different photo
+        //onView(withId(R.id.btnPrev)).perform(click());
+        //onView(withId(R.id.btnNext)).perform(click());
+
+        // Check the search feature
+        //onView(withId(R.id.btnSearch)).perform(click());
+
+        // Test the gps search
         onView(withId(R.id.latitudeSearch)).perform(typeText("43"), closeSoftKeyboard());
         onView(withId(R.id.longitudeSearch)).perform(typeText("-122"), closeSoftKeyboard());
         onView(withId(R.id.radiusSearch)).perform(typeText("5"), closeSoftKeyboard());
+        onView(withId(R.id.btnSearch)).perform(click());
+
+        // Test the date search
+        onView(withId(R.id.btnSearch)).perform(click());
+        onView(withId(R.id.minDateSearch)).perform(typeText("2020:02:08"), closeSoftKeyboard());
+        onView(withId(R.id.maxDateSearch)).perform(typeText("2020:02:11"), closeSoftKeyboard());
         onView(withId(R.id.btnSearch)).perform(click());
 
         // Change to a different photo
         onView(withId(R.id.btnPrev)).perform(click());
         onView(withId(R.id.btnNext)).perform(click());
 
+        // Test the share button
+        onView(withId(R.id.btnShare)).perform(click());
+        onView(withId(R.id.btnDiscord)).perform(click());
     }
 }
