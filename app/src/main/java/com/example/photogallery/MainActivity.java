@@ -354,8 +354,6 @@ public class MainActivity extends AppCompatActivity {
             }
             else
                 Log.i("Dev::", "No GPS signal");
-            //String tempLong = ;
-            //String tempLat = ;
 
             displayPhoto(mCurrentPhotoPath);
 

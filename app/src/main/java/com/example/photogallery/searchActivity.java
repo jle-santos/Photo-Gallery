@@ -25,14 +25,6 @@ public class searchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // Get intent from main activity inorder to get the location of the picture taken
-        //Intent intent = getIntent();
-        //String filePath = intent.getStringExtra(MainActivity.Picture_Location);
-
-        //Removed photo preview for space
-        //ImageView imPreview = findViewById(R.id.preview);
-        //imPreview.setImageBitmap(BitmapFactory.decodeFile(filePath));
-
         // Create various object on the xml file
         final Button btnCancel = findViewById(R.id.btnCancel);
         final Button btnSearch = findViewById(R.id.btnSearch);
@@ -75,7 +67,7 @@ public class searchActivity extends AppCompatActivity {
             }
         });
 
-        // On search find the filegit 
+        // On search find the filegit
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
