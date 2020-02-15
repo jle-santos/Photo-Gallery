@@ -1,6 +1,16 @@
-// Authors: Lemuel, Karen, Ryan
-// Desc: allows user to take photos and stores these on a file system folder, automatically tags each captured photo with the current timestamp,
-//       allows user to add and/or edit a caption to the photo, and supports time as well as caption based search of the photos and ability to view these photos.
+// File:         MainActivity.java
+// Created:      [2020/01/14 creation date]
+// Author:       Lemuel, Karen, Ryan
+//
+// Desc:
+//  1. Allows user to take photos and stores these on a file system folder
+//  2. Automatically tags each captured photo with the current timestamp
+//  3. Allows user to add and/or edit a caption to the photo, and supports time as well as
+//     caption based search of the photos and ability to view these photos.
+//  4. Photo location tagging
+//  5. Location based search
+//  6. Uploading of photos to social media
+//  7. Automation of location based search
 
 package com.example.photogallery;
 
@@ -34,23 +44,25 @@ import java.util.Date;
 
 // import com.example.photogallery.R;
 
+
+//*******************************************************************
+//  MainActivity
+//
+// Main activity that connects to the search and share activity
+//*******************************************************************
 public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
-
-    // Send picture location to search activity
-    public static final String Picture_Location = "com.example.photogallery.Picture_Location";
+    public static final String Picture_Location = "com.example.photogallery.Picture_Location"; // Send picture location to search activity
     String mCurrentPhotoPath = "";
-
-    // Hold user entered caption
     private String captionText = "";
-
     private ArrayList<photoClass> photoGallery;
-
     private int currentPhotoIndex = 0;
 
-    //Location
+    // Create GPS class that will return location
     private gpsClass gps = new gpsClass(this);
 
+
+    // Initialize activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,27 +73,15 @@ public class MainActivity extends AppCompatActivity {
         final Button btnSearch = findViewById(R.id.btnSearch);
         final Button btnShare = findViewById(R.id.btnShare);
         final TextView caption = findViewById(R.id.captionText);
-
         final Button btnNext = findViewById(R.id.btnNext);
         final Button btnPrev = findViewById(R.id.btnPrev);
-
-
-
 
         //Generate gallery
         Date minDate = new Date(Long.MIN_VALUE);
         Date maxDate = new Date(Long.MAX_VALUE);
-
-
-
         //Location location = gps.getLocation(this);
-
         photoGallery = generatePhotos(minDate, maxDate);
-
-
         Log.i("Dev::", "generating gallery");
-
-
 
         if (photoGallery.isEmpty()) {
             Log.i("Dev::", "No photos found");
@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
             //caption.setText("Photos in Gallery:" + Integer.toString(photoGallery.size()));
             mCurrentPhotoPath = photoGallery.get(currentPhotoIndex).filePath;
             displayPhoto(mCurrentPhotoPath);
-
         }
 
         // if caption button is clicked add caption text and save it
@@ -149,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Create new share activity when button is pressed
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Cycles which photo is selected and displayed on screen
+        // chooses next photo
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,7 +177,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
+        // Cycles which photo is selected and displayed on screen
+        // chooses previous photo
         btnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,6 +198,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Desc:
+     *  Corrects the list of photos in the array to only contain those
+     *  specified by the user
+     *
+     * Bugs:
+     *  None atm
+     */
     private ArrayList<photoClass> filterPhotoLocations(ArrayList<photoClass> photoGallery, String lat, String lon, String rad) {
         Double latitude = Double.parseDouble(lat);
         Double longitude = Double.parseDouble(lon);
@@ -233,7 +245,13 @@ public class MainActivity extends AppCompatActivity {
         return photoGallery;
     }
 
-
+    /**
+     * Desc:
+     *  Adds photos from search query to the current photo gallery
+     *
+     * Bugs:
+     *  None atm
+     */
     private ArrayList<photoClass> generatePhotos(Date minDateQuery, Date maxDateQuery) {
         File folder = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath(), "/Android/data/com.example.photogallery/files/Pictures");
@@ -261,12 +279,28 @@ public class MainActivity extends AppCompatActivity {
         return generatePhotos;
     }
 
+
+    /**
+     * Desc:
+     *  Sets the main activity imageview to display the photo passed to this function
+     *
+     * Bugs:
+     *  None atm
+     */
     private void displayPhoto(String path) {
         ImageView iv = (ImageView) findViewById(R.id.ivGallery);
         iv.setImageBitmap(BitmapFactory.decodeFile(path));
         writeCaption(path);
     }
 
+    /**
+     * Desc:
+     *  Extracts the metadata from the image and updates all textview
+     *  related fields on display
+     *
+     * Bugs:
+     *  None atm
+     */
     private void writeCaption(String path) {
         TextView captiontextrefresh = findViewById(R.id.captionText);
         TextView dateTextRefresh = findViewById(R.id.dateView);
@@ -275,31 +309,48 @@ public class MainActivity extends AppCompatActivity {
 
         latRefresh.setText(photoGallery.get(currentPhotoIndex).getLatitude());
         lonRefresh.setText(photoGallery.get(currentPhotoIndex).getLongitude());
-
         //Get image metadata
         captiontextrefresh.setText(photoGallery.get(currentPhotoIndex).getCaption());
         dateTextRefresh.setText(photoGallery.get(currentPhotoIndex).dateTime.toString());
-
     }
-    //function to open Share activity
+
+
+
+    /**
+     * Desc:
+     *  creates a new instance of the share activity with a request code of 404
+     *
+     * Bugs:
+     *  None atm
+     */
     public void openShareActivity() {
         Intent intent = new Intent(this, shareActivity.class);
         intent.putExtra(Picture_Location, mCurrentPhotoPath); //pass file location to new activity
         startActivityForResult(intent, 404);
     }
 
-    // function to open new search activity
+    /**
+     * Desc:
+     *  creates a new instance of the search activity with a request code of 999
+     *
+     * Bugs:
+     *  None atm
+     */
     public void openSearchActivity() {
         Intent intent = new Intent(this, searchActivity.class);
         //intent.putExtra(Picture_Location, mCurrentPhotoPath); //pass file location to new activity
         startActivityForResult(intent, 999);
     }
 
-    // Activate camera and take the picture
+    /**
+     * Desc:
+     *  Opens the camera and lets the user take a picture
+     *
+     * Bugs:
+     *  None atm
+     */
     public void takePicture(View v) {
         //Request location to tag photo with
-
-
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
@@ -317,8 +368,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Time stamp picture from camera and put in picture directory
-    // located in android/data/com.example.photogallery/files/pictures
+
+    /**
+     * Desc:
+     *  Takes the photo taken by the user and generates a file name
+     *  at the location: android/data/com.example.photogallery/files/pictures
+     *
+     * Bugs:
+     *  None atm
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -330,19 +388,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // Puts image from camera onto the imageview object
+
+    /**
+     * Desc:
+     *  Receives results from the other activities and processes the data
+     *  code: 404 - share activity [NOT IN USE]
+     *  code: 999 - search activity
+     *  code: REQUEST_IMAGE_CAPTURE - camera activity
+     *
+     * Bugs:
+     *  None atm
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // execute this if from camera
+        // takes photo from camera activity
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             //Append to photo gallery
             photoGallery.add(new photoClass(mCurrentPhotoPath));
-
             //Set index to the most recent photo
             currentPhotoIndex = photoGallery.size() - 1;
-
             Location location = gps.getLocation();
-
             if(location != null) {
                 String longitude = (Location.convert(location.getLongitude(), Location.FORMAT_DEGREES));
                 String latitude = (Location.convert(location.getLatitude(), Location.FORMAT_DEGREES));
@@ -356,10 +421,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("Dev::", "No GPS signal");
             //String tempLong = ;
             //String tempLat = ;
-
             displayPhoto(mCurrentPhotoPath);
-
-        // execute this if from search activity
+        // takes search query data from search activity
         } else if (requestCode == 999 && resultCode == RESULT_OK) {
 
             String searchType = data.getStringExtra("Type");
@@ -409,7 +472,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
-
 }
