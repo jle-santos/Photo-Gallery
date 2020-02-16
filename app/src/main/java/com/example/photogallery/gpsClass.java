@@ -1,6 +1,5 @@
 package com.example.photogallery;
 
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,11 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.core.content.ContextCompat;
-
+//*******************************************************************
+//  gpsClass
+//
+//  Object meant for managing all location based services
+//*******************************************************************
 public class gpsClass extends Service {
     // Acquire a reference to the system Location Manager
 
@@ -23,12 +26,25 @@ public class gpsClass extends Service {
     private boolean networkStatus = false;
 
     Context mContext;
-
+    /**
+     * Desc:
+     *  Constructor for the object creating the context
+     *
+     * Bugs:
+     *  None atm
+     */
     public gpsClass(Context mContext) {
         this.mContext = mContext;
         //getLocation();
     }
 
+    /**
+     * Desc:
+     *  returns the GPS coordinates
+     *
+     * Bugs:
+     *  None atm
+     */
     public Location getLocation() {
         locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
         //Get status of location providers

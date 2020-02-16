@@ -1,3 +1,13 @@
+// File:         shareActivity.java
+// Created:      [2020/01/14 creation date]
+// Author:       Lemuel, Karen, Ryan
+//
+// Desc:
+//  Search activity allows the user to discriminate based on:
+//      1. Location
+//      2. Caption
+//      3. Date taken
+//
 package com.example.photogallery;
 
 import android.content.Intent;
@@ -15,9 +25,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
 
+//*******************************************************************
+//  searchActivity
+//
+//  Manages new activity for search queries from the user
+//*******************************************************************
 public class searchActivity extends AppCompatActivity {
 
-    //Location
+    // Location
     private gpsClass gpsSearch = new gpsClass(this);
 
     @Override
@@ -29,22 +44,21 @@ public class searchActivity extends AppCompatActivity {
         //Intent intent = getIntent();
         //String filePath = intent.getStringExtra(MainActivity.Picture_Location);
 
-        //Removed photo preview for space
+        // Removed photo preview for space
         //ImageView imPreview = findViewById(R.id.preview);
         //imPreview.setImageBitmap(BitmapFactory.decodeFile(filePath));
 
-        // Create various object on the xml file
+        // Create miscellaneous object found in the xml file
         final Button btnCancel = findViewById(R.id.btnCancel);
         final Button btnSearch = findViewById(R.id.btnSearch);
-
         final Button btnLocate = findViewById(R.id.btnLocate);
-
         final EditText captionSearch = findViewById(R.id.searchCaption);
 
-        //Date search
+        // Date search
         final EditText minDate = findViewById(R.id.minDateSearch);
         final EditText maxDate = findViewById(R.id.maxDateSearch);
 
+        // location search
         final EditText latitudeSearch = findViewById(R.id.latitudeSearch);
         final EditText longitudeSearch = findViewById(R.id.longitudeSearch);
         final EditText radiusSearch = findViewById(R.id.radiusSearch);
@@ -58,7 +72,7 @@ public class searchActivity extends AppCompatActivity {
             }
         });
 
-        //Get location
+        // Get location
         btnLocate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

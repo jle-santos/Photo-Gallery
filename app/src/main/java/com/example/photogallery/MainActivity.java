@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
     // Create GPS class that will return location
     private gpsClass gps = new gpsClass(this);
 
-
     // Initialize activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,3 +1,11 @@
+// File:         shareActivity.java
+// Created:      [2020/15/14 creation date]
+// Author:       Lemuel, Karen, Ryan
+//
+// Desc:
+//  Espresso code dedicated to checking the features of the app
+//
+
 package com.example.photogallery;
 
 import android.util.Log;
@@ -24,12 +32,25 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 
+//*******************************************************************
+//  photoGalleryTest
+//
+//  Tests the main photogallery app
+//*******************************************************************
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class photoGalleryTest {
 
-    // Create matcher to access element value
-    // Source: https://stackoverflow.com/questions/45597008/espresso-get-text-of-element
+    /**
+     * Desc:
+     *  Creates matcher to access element value
+     *
+     * Source:
+     *  https://stackoverflow.com/questions/45597008/espresso-get-text-of-element
+     *
+     * Bugs:
+     *  None atm
+     */
     private Matcher<View> hasValueEqualTo(final String content) {
 
         return new TypeSafeMatcher<View>() {
@@ -67,6 +88,13 @@ public class photoGalleryTest {
     @Rule
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
+    /**
+     * Desc:
+     *  Simulates user inputs when testing the app
+     *
+     * Bugs:
+     *  None atm
+     */
     @Test
     public void galleryWorking() throws Exception {
 
