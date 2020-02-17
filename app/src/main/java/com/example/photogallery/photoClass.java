@@ -15,7 +15,7 @@ import java.util.Date;
 public class photoClass {
     String filePath;
     Date dateTime;
-
+  
     String latitude;
     String longitude;
 
@@ -31,9 +31,8 @@ public class photoClass {
             ExifInterface exif = new ExifInterface(photoPath);
 
             //Convert date string to date object
-            String tempDate = exif.getAttribute(ExifInterface.TAG_DATETIME);
-
             try {
+                String tempDate = exif.getAttribute(ExifInterface.TAG_DATETIME);
                 dateTime = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(tempDate);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -170,54 +169,11 @@ public class photoClass {
      *  None atm
      */
     public void setCoordinates(String latitude, String longitude) {
-        /*
-        double lat = location.getLatitude();
-        double alat = Math.abs(lat);
-        String dms = Location.convert(alat, Location.FORMAT_SECONDS);
-        String[] splits = dms.split(":");
-        String[] secnds = (splits[2]).split("\\.");
-        String seconds;
-        if(secnds.length==0)
-        {
-            seconds = splits[2];
-        }
-        else
-        {
-            seconds = secnds[0];
-        }
-
-        String latitudeStr = splits[0] + "/1," + splits[1] + "/1," + seconds + "/1";
-
-        double lon = location.getLongitude();
-        double alon = Math.abs(lon);
-
-        dms = Location.convert(alon, Location.FORMAT_SECONDS);
-        splits = dms.split(":");
-        secnds = (splits[2]).split("\\.");
-
-        if(secnds.length==0)
-        {
-            seconds = splits[2];
-        }
-        else
-        {
-            seconds = secnds[0];
-        }
-        String longitudeStr = splits[0] + "/1," + splits[1] + "/1," + seconds + "/1";
-        */
-
-
         String coordinates = latitude + "_" + longitude;
 
         try {
             ExifInterface exif = new ExifInterface(filePath);
             exif.setAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION, coordinates);
-            //exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, latitude);
-            //exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, lat>0?"N":"S");
-
-            //exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, longitude);
-            //exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, lon>0?"E":"W");
-
             exif.saveAttributes();
         } catch (IOException e) {
             e.printStackTrace();

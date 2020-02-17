@@ -49,13 +49,12 @@ public class gpsClass extends Service {
         locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
         //Get status of location providers
         // Getting GPS status
-        gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        //gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         // Getting network status
         networkStatus = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
         Log.i("Dev::", "GPS: " + gpsStatus + "NET: " + networkStatus);
-
 
         Log.i("Dev::", "Defining listener");
         // Define a listener that responds to location updates

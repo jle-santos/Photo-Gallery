@@ -40,6 +40,8 @@ public class searchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        // Create various object on the xml file
+
         // Get intent from main activity inorder to get the location of the picture taken
         //Intent intent = getIntent();
         //String filePath = intent.getStringExtra(MainActivity.Picture_Location);
@@ -80,14 +82,16 @@ public class searchActivity extends AppCompatActivity {
 
                 Location location = gpsSearch.getLocation();
 
-                latitudeSearch.setText(Double.toString(location.getLatitude()));
-                longitudeSearch.setText(Double.toString(location.getLongitude()));
-
-                //Toast.makeText(getApplicationContext(), "Lat:" + location.getLatitude() + " | Lon: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                if(location != null) {
+                    latitudeSearch.setText(Double.toString(location.getLatitude()));
+                    longitudeSearch.setText(Double.toString(location.getLongitude()));
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "No location found", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // On search find the file
+        // On search find the filegit
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

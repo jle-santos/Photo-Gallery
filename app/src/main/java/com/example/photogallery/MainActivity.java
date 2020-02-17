@@ -418,8 +418,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else
                 Log.i("Dev::", "No GPS signal");
-            //String tempLong = ;
-            //String tempLat = ;
+          
             displayPhoto(mCurrentPhotoPath);
         // takes search query data from search activity
         } else if (requestCode == 999 && resultCode == RESULT_OK) {
