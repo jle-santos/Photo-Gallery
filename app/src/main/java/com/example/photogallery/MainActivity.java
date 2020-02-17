@@ -45,6 +45,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+//import com.example.photogallery.photoPackage.photoClass;
+
 // import com.example.photogallery.R;
 
 //*******************************************************************
