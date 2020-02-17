@@ -1,4 +1,4 @@
-package com.example.photogallery;
+package com.example.photogallery.photoPackage;
 
 import android.app.Service;
 import android.content.Context;
