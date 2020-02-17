@@ -11,19 +11,17 @@
 package com.example.photogallery;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.File;
+import com.example.photogallery.photoPackage.gpsClass;
 
 //*******************************************************************
 //  searchActivity

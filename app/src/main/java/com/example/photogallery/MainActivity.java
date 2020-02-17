@@ -35,6 +35,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.example.photogallery.photoPackage.gpsClass;
+import com.example.photogallery.photoPackage.photoClass;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -43,7 +46,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 // import com.example.photogallery.R;
-
 
 //*******************************************************************
 //  MainActivity

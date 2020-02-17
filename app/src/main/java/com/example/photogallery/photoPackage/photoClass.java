@@ -1,4 +1,4 @@
-package com.example.photogallery;
+package com.example.photogallery.photoPackage;
 
 import android.media.ExifInterface;
 
@@ -13,11 +13,11 @@ import java.util.Date;
 //  Object meant for managing all data related to each photo
 //*******************************************************************
 public class photoClass {
-    String filePath;
-    Date dateTime;
-  
-    String latitude;
-    String longitude;
+    public String filePath;
+    public Date dateTime;
+
+    public String latitude;
+    public String longitude;
 
     /**
      * Desc:
