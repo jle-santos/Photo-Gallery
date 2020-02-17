@@ -7,10 +7,25 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+//*******************************************************************
+//  photoClass
+//
+//  Object meant for managing all data related to each photo
+//*******************************************************************
 public class photoClass {
     String filePath;
     Date dateTime;
+  
+    String latitude;
+    String longitude;
 
+    /**
+     * Desc:
+     *  find all the data you can about the photo selected by the user
+     *
+     * Bugs:
+     *  None atm
+     */
     public photoClass(String photoPath) {
         try {
             ExifInterface exif = new ExifInterface(photoPath);
@@ -35,6 +50,14 @@ public class photoClass {
         }
     }
 
+
+    /**
+     * Desc:
+     *  Adds the caption to the metadata of the photo under "comment"
+     *
+     * Bugs:
+     *  None atm
+     */
     public void setCaption(String caption) {
 
         try {
@@ -46,6 +69,14 @@ public class photoClass {
         }
     }
 
+
+    /**
+     * Desc:
+     *  retun the caption under the "comment" section in the metadata
+     *
+     * Bugs:
+     *  None atm
+     */
     public String getCaption() {
         String caption = "";
 
@@ -60,6 +91,33 @@ public class photoClass {
         return caption;
     }
 
+    /*
+
+    /**
+     * Desc:
+     *  set the coordinates of where the photo was taken
+     *
+     * Bugs:
+     *  None atm
+    public void setCoordinates(String latitude, String longitude) {
+        try {
+            ExifInterface exif = new ExifInterface(filePath);
+            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, latitude);
+            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, longitude);
+            exif.saveAttributes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
+
+
+    /**
+     * Desc:
+     *  Returns the latitude of where the photo was taken
+     *
+     * Bugs:
+     *  None atm
+     */
     public String getLatitude() {
         String coord = "N/A";
 
@@ -76,6 +134,14 @@ public class photoClass {
         return coord;
     }
 
+
+    /**
+     * Desc:
+     *  Returns the longitude of where the photo was taken
+     *
+     * Bugs:
+     *  None atm
+     */
     public String getLongitude() {
         String coord = "N/A";
 
@@ -93,6 +159,15 @@ public class photoClass {
         return coord;
     }
 
+
+
+    /**
+     * Desc:
+     *  Sets the coordinate values in the metadata
+     *
+     * Bugs:
+     *  None atm
+     */
     public void setCoordinates(String latitude, String longitude) {
         String coordinates = latitude + "_" + longitude;
 

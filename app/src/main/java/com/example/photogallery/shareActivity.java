@@ -1,3 +1,12 @@
+// File:         shareActivity.java
+// Created:      [2020/01/14 creation date]
+// Author:       Lemuel, Karen, Ryan
+//
+// Desc:
+//  Share activity allows the user to share to:
+//      1. Messenger
+//      2. Discord
+//
 package com.example.photogallery;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,12 +24,16 @@ import android.widget.Toast;
 
 import java.io.File;
 
-
-
+//*******************************************************************
+//  ShareActivity
+//
+//  Shares the current photo selected by the main activity
+//*******************************************************************
 public class shareActivity extends AppCompatActivity {
 
     String filePath;
 
+    // Initilizes activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +101,14 @@ public class shareActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Desc:
+     *  pushes the current image on the main activity as an intent
+     *  to the desired app [Discord or messenger]
+     *
+     * Bugs:
+     *  None atm
+     */
     private void shareImage(String namePackage) {
         File file = new File(filePath);
 
