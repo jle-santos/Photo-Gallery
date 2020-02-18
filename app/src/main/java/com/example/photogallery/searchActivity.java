@@ -129,6 +129,13 @@ public class searchActivity extends AppCompatActivity {
                         setResult(RESULT_OK, path);
                         finish();
                     }
+                    //If everything else empty
+                    else if(!captionQuery.isEmpty()) {
+                        path.putExtra("captionQuery", captionQuery);
+                        path.putExtra("Type", "Caption");
+                        setResult(RESULT_OK, path);
+                        finish();
+                    }
                 }
 
                 }

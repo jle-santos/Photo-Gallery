@@ -111,5 +111,31 @@ public class gallerySupport {
         return photoGallery;
     }
 
+    /**
+     * Desc:
+     *  Corrects the list of photos in the array to only contain those
+     *  specified by the user
+     *
+     * Bugs:
+     *  None atm
+     */
+    public ArrayList<photoClass> filterPhotoCaption(ArrayList<photoClass> photoGallery, String caption) {
+
+        for (int index = photoGallery.size() - 1; index >= 0; index--) {
+
+            photoClass photo = photoGallery.get(index);
+
+                if(photo.getCaption().contains(caption)) {
+                    //Photo within filter
+                }
+                else {
+                    //Photo not within filter
+                    photoGallery.remove(index);
+                }
+            }
+
+        return photoGallery;
+    }
+
 
 }

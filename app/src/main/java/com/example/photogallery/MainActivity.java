@@ -379,6 +379,11 @@ public class MainActivity extends AppCompatActivity {
                 photoGallery = gallery.filterPhotoLocations(photoGallery, latitude, longitude, radius);
 
             }
+            else if(searchType.equals("Caption")) {
+                String caption = data.getStringExtra(("captionQuery"));
+
+                photoGallery = gallery.filterPhotoCaption(photoGallery, caption);
+            }
 
             if (photoGallery.isEmpty()) {
                 Log.i("Dev:: Search yielded", "No photos found");
