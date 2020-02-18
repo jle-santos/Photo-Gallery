@@ -6,25 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".searchActivity">
 
-    <ImageView
-        android:id="@+id/preview"
-        android:layout_width="411dp"
-        android:layout_height="387dp"
-        android:layout_marginTop="344dp"
+    <TextView
+        android:id="@+id/dateFormat3"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="25dp"
+        android:text="Format: Decimal Degrees"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/latText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:color/transparent"
-        android:maxHeight="42dp"
-        android:maxWidth="42dp"
-        android:scaleType="fitXY"/>
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/searchCaption"
+        app:layout_constraintTop_toBottomOf="@+id/maxDateSearch"
+        />
 
     <TextView
         android:id="@+id/caption_handle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="CAPTION:"
@@ -52,7 +53,7 @@
         android:id="@+id/searchCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="25dp"
         android:ems="10"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +63,7 @@
         android:id="@+id/btnSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="275dp"
+        android:layout_marginTop="460dp"
         android:layout_marginEnd="100dp"
         android:text="Search"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,53 +74,135 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="275dp"
+        android:layout_marginTop="460dp"
         android:text="Cancel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editMinDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="25dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchCaption" />
-
-    <EditText
-        android:id="@+id/editMaxDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="25dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editMinDate" />
 
     <TextView
         android:id="@+id/dateTextMin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="50dp"
         android:text="DATE MIN:"
         android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/editMinDate"
+        app:layout_constraintEnd_toEndOf="@+id/caption_handle"
         app:layout_constraintTop_toBottomOf="@+id/caption_handle" />
 
     <TextView
         android:id="@+id/dateTextMax"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="15dp"
         android:text="DATE MAX:"
         android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/editMaxDate"
+        app:layout_constraintEnd_toEndOf="@+id/dateTextMin"
         app:layout_constraintTop_toBottomOf="@+id/dateTextMin" />
+
+    <TextView
+        android:id="@+id/latText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:text="LATITUDE:"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/dateTextMin"
+        app:layout_constraintTop_toBottomOf="@+id/dateTextMin" />
+
+    <TextView
+        android:id="@+id/longText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="LONGITUDE:"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/dateTextMin"
+        app:layout_constraintTop_toBottomOf="@+id/latText" />
+
+    <TextView
+        android:id="@+id/radText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="RADIUS:"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/dateTextMin"
+        app:layout_constraintTop_toBottomOf="@+id/longText" />
+
+    <TextView
+        android:id="@+id/dateFormat"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="1dp"
+        android:text="Date Format: YYYY:MM:DD"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/minDateSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/searchCaption"
+        app:layout_constraintTop_toBottomOf="@+id/searchCaption" />
+
+    <EditText
+        android:id="@+id/minDateSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/dateFormat"
+        app:layout_constraintTop_toTopOf="@+id/dateTextMin" />
+
+    <EditText
+        android:id="@+id/maxDateSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/minDateSearch"
+        app:layout_constraintTop_toTopOf="@+id/dateTextMax" />
+
+    <EditText
+        android:id="@+id/latitudeSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintEnd_toEndOf="@+id/maxDateSearch"
+        app:layout_constraintTop_toTopOf="@+id/latText" />
+
+    <EditText
+        android:id="@+id/longitudeSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintEnd_toEndOf="@+id/maxDateSearch"
+        app:layout_constraintTop_toTopOf="@+id/longText" />
+
+    <EditText
+        android:id="@+id/radiusSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="In degrees"
+        android:inputType="numberSigned"
+        app:layout_constraintEnd_toEndOf="@+id/maxDateSearch"
+        app:layout_constraintTop_toTopOf="@+id/radText" />
+
+    <Button
+        android:id="@+id/btnLocate"
+        android:layout_width="213dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="5dp"
+        android:background="#4CAF50"
+        android:text="GET MY LOCATION"
+        app:layout_constraintEnd_toEndOf="@+id/radiusSearch"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/radiusSearch"
+        app:layout_constraintTop_toBottomOf="@+id/radiusSearch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

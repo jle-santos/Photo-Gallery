@@ -1,3 +1,11 @@
+// File:         shareActivity.java
+// Created:      [2020/15/14 creation date]
+// Author:       Lemuel, Karen, Ryan
+//
+// Desc:
+//  Espresso code dedicated to checking the features of the app
+//
+
 package com.example.photogallery;
 
 import android.util.Log;
@@ -17,19 +25,30 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.action.ViewActions.typeText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+//*******************************************************************
+//  photoGalleryTest [Sprint II]
+//
+//  Tests the main photogallery app
+//*******************************************************************
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class photoGalleryTest {
 
-    // Create matcher to access element value
-    // Source: https://stackoverflow.com/questions/45597008/espresso-get-text-of-element
+    /**
+     * Desc:
+     *  Creates matcher to access element value
+     *
+     * Source:
+     *  https://stackoverflow.com/questions/45597008/espresso-get-text-of-element
+     *
+     * Bugs:
+     *  None atm
+     */
     private Matcher<View> hasValueEqualTo(final String content) {
 
         return new TypeSafeMatcher<View>() {
@@ -67,6 +86,13 @@ public class photoGalleryTest {
     @Rule
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
+    /**
+     * Desc:
+     *  Simulates user inputs when testing the app
+     *
+     * Bugs:
+     *  None atm
+     */
     @Test
     public void galleryWorking() throws Exception {
 
@@ -80,14 +106,34 @@ public class photoGalleryTest {
 
         // Check the search feature
         onView(withId(R.id.btnSearch)).perform(click());
+        //onView(withId(R.id.searchCaption)).perform(typeText("computer"), closeSoftKeyboard());
 
-        // Test the caption search
-        onView(withId(R.id.searchCaption)).perform(typeText("bag"), closeSoftKeyboard());
+        // Change to a different photo
+        //onView(withId(R.id.btnPrev)).perform(click());
+        //onView(withId(R.id.btnNext)).perform(click());
+
+        // Check the search feature
+        //onView(withId(R.id.btnSearch)).perform(click());
+
+        // Test the gps search
+        onView(withId(R.id.btnLocate)).perform(click());
+        //onView(withId(R.id.latitudeSearch)).perform(typeText("43"), closeSoftKeyboard());
+        //onView(withId(R.id.longitudeSearch)).perform(typeText("-122"), closeSoftKeyboard());
+        onView(withId(R.id.radiusSearch)).perform(typeText("5"), closeSoftKeyboard());
+        onView(withId(R.id.btnSearch)).perform(click());
+
+        // Test the date search
+        onView(withId(R.id.btnSearch)).perform(click());
+        onView(withId(R.id.minDateSearch)).perform(typeText("2020:02:08"), closeSoftKeyboard());
+        onView(withId(R.id.maxDateSearch)).perform(typeText("2020:02:21"), closeSoftKeyboard());
         onView(withId(R.id.btnSearch)).perform(click());
 
         // Change to a different photo
         onView(withId(R.id.btnPrev)).perform(click());
         onView(withId(R.id.btnNext)).perform(click());
 
+        // Test the share button
+        onView(withId(R.id.btnShare)).perform(click());
+        onView(withId(R.id.btnDiscord)).perform(click());
     }
 }

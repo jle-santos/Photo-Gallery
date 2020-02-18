@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".shareActivity">
+
+    <Button
+        android:id="@+id/btnDiscord"
+        android:layout_width="125dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#5F5BD8"
+        android:fontFamily="sans-serif"
+        android:text="DISCORD"
+        android:textColor="#FFFFFF"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/btnTwitter"
+        app:layout_constraintStart_toStartOf="@+id/btnTwitter"
+        app:layout_constraintTop_toBottomOf="@+id/btnTwitter" />
+
+    <ImageView
+        android:id="@+id/ivShare"
+        android:layout_width="221dp"
+        android:layout_height="203dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="false"
+        android:layout_marginTop="10dp"
+        android:adjustViewBounds="false"
+        android:maxWidth="100dp"
+        android:maxHeight="42dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchActivityTitle" />
+
+    <TextView
+        android:id="@+id/searchActivityTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Share Photo"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Share image above to:"
+        app:layout_constraintEnd_toEndOf="@+id/ivShare"
+        app:layout_constraintStart_toStartOf="@+id/ivShare"
+        app:layout_constraintTop_toBottomOf="@+id/ivShare" />
+
+    <Button
+        android:id="@+id/btnTwitter"
+        android:layout_width="125dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#4779EE"
+        android:fontFamily="sans-serif"
+        android:text="MESSENGER"
+        android:textColor="#FFFFFF"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

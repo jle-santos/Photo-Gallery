@@ -1,18 +1,24 @@
-// Authors: Lemuel, Karen, Ryan
-// Desc: allows user to take photos and stores these on a file system folder, automatically tags each captured photo with the current timestamp,
-//       allows user to add and/or edit a caption to the photo, and supports time as well as caption based search of the photos and ability to view these photos.
+// File:         MainActivity.java
+// Created:      [2020/01/14 creation date]
+// Author:       Lemuel, Karen, Ryan
+//
+// Desc:
+//  1. Allows user to take photos and stores these on a file system folder
+//  2. Automatically tags each captured photo with the current timestamp
+//  3. Allows user to add and/or edit a caption to the photo, and supports time as well as
+//     caption based search of the photos and ability to view these photos.
+//  4. Photo location tagging
+//  5. Location based search
+//  6. Uploading of photos to social media
+//  7. Automation of location based search
 
 package com.example.photogallery;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
-
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,31 +32,44 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-// import com.example.photogallery.R;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
-import org.w3c.dom.Text;
+import com.example.photogallery.photoPackage.gpsClass;
+import com.example.photogallery.photoPackage.photoClass;
+import com.example.photogallery.photoPackage.gallerySupport;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
+//import com.example.photogallery.photoPackage.photoClass;
+
+// import com.example.photogallery.R;
+
+//*******************************************************************
+//  MainActivity
+//
+// Main activity that connects to the search and share activity
+//*******************************************************************
 public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
-
-    // Send picture location to search activity
-    public static final String Picture_Location = "com.example.photogallery.Picture_Location";
+    public static final String Picture_Location = "com.example.photogallery.Picture_Location"; // Send picture location to search activity
     String mCurrentPhotoPath = "";
-
-    // Hold user entered caption
     private String captionText = "";
-
-    //Photo List
-    private ArrayList<String> photoGallery;
+    private ArrayList<photoClass> photoGallery;
     private int currentPhotoIndex = 0;
 
+    // Create GPS class that will return location
+    private gpsClass gps = new gpsClass(this);
+
+    // Create gallery populator object that returns the proper sorted gallery
+    private gallerySupport gallery = new gallerySupport();
+
+    // Initialize activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,24 +78,17 @@ public class MainActivity extends AppCompatActivity {
         // Object Creation
         final Button btnCaption = findViewById(R.id.btnCaption);
         final Button btnSearch = findViewById(R.id.btnSearch);
+        final Button btnShare = findViewById(R.id.btnShare);
         final TextView caption = findViewById(R.id.captionText);
-        final TextView dateCaption = findViewById(R.id.dateView);
-
         final Button btnNext = findViewById(R.id.btnNext);
         final Button btnPrev = findViewById(R.id.btnPrev);
-
-        // Set default text for caption text view
-
 
         //Generate gallery
         Date minDate = new Date(Long.MIN_VALUE);
         Date maxDate = new Date(Long.MAX_VALUE);
-        photoGallery = populateGallery(minDate, maxDate);
 
-
-
+        photoGallery = gallery.generatePhotos();
         Log.i("Dev::", "generating gallery");
-
 
         if (photoGallery.isEmpty()) {
             Log.i("Dev::", "No photos found");
@@ -89,10 +101,8 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("Dev::/onCreate, number of photos:", Integer.toString(photoGallery.size()));
             //caption.setText("Photos in Gallery:" + Integer.toString(photoGallery.size()));
-            mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
-
+            mCurrentPhotoPath = photoGallery.get(currentPhotoIndex).filePath;
             displayPhoto(mCurrentPhotoPath);
-
         }
 
         // if caption button is clicked add caption text and save it
@@ -120,25 +130,8 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             captionText = input.getText().toString(); //get value from user
                             caption.setText(captionText); // write to textview
-
-                            String OriginalPhotoPath = mCurrentPhotoPath;
-                            Log.d("Dev:: Editing: ", OriginalPhotoPath);
-
-                            // Remove Previous caption if one is found
-                            if (mCurrentPhotoPath.contains("_*")){
-                                mCurrentPhotoPath = mCurrentPhotoPath.substring(0, mCurrentPhotoPath.indexOf("_*"));
-                                mCurrentPhotoPath = mCurrentPhotoPath + ".jpg";
-                            }
-                            // Overwrite file name with caption
-                            //String filelocation = "/storage/emulated/0/Android/data/com.example.photogallery/files/Pictures/";
-                            Log.d("Dev:: Editing: ", mCurrentPhotoPath);
-                            String newName = mCurrentPhotoPath.substring(0, mCurrentPhotoPath.length() - 4) + "_*" + captionText + ".jpg";
-                            File currentPicturename = new File(OriginalPhotoPath);
-                            File newPicturename = new File(newName);
-                            currentPicturename.renameTo(newPicturename);
-                            mCurrentPhotoPath = newName;
-                            photoGallery.set(currentPhotoIndex, mCurrentPhotoPath);
-                            Log.d("Dev:: Renamed file", mCurrentPhotoPath);
+                            //Set caption
+                            photoGallery.get(currentPhotoIndex).setCaption(captionText);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -149,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                     });
                     builder.show();
                 }
-
             }
         });
 
@@ -163,6 +155,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Create new share activity when button is pressed
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // print to terminal when button is pressed
+                Log.i("btnShare", "has been pressed");
+                openShareActivity();
+            }
+        });
+
+        // Cycles which photo is selected and displayed on screen
+        // chooses next photo
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,12 +179,13 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!photoGallery.isEmpty()) {
                     Log.d("Dev:: btnNext,", Integer.toString(currentPhotoIndex));
-                    displayPhoto(photoGallery.get(currentPhotoIndex));
-                    mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
+                    displayPhoto(photoGallery.get(currentPhotoIndex).filePath);
+                    mCurrentPhotoPath = photoGallery.get(currentPhotoIndex).filePath;
                 }
             }
         });
-
+        // Cycles which photo is selected and displayed on screen
+        // chooses previous photo
         btnPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,64 +198,85 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!photoGallery.isEmpty()) {
                     Log.d("Dev:: btnPrev,", Integer.toString(currentPhotoIndex));
-                    displayPhoto(photoGallery.get(currentPhotoIndex));
-                    mCurrentPhotoPath = photoGallery.get(currentPhotoIndex);
+                    displayPhoto(photoGallery.get(currentPhotoIndex).filePath);
+                    mCurrentPhotoPath = photoGallery.get(currentPhotoIndex).filePath;
                 }
             }
         });
     }
 
-    //Function to generate list of files in folder
-    private ArrayList<String> populateGallery(Date minDate, Date maxDate) {
-        File folder = new File(Environment.getExternalStorageDirectory()
-                .getAbsolutePath(), "/Android/data/com.example.photogallery/files/Pictures");
 
-        ArrayList<String> populateGallery = new ArrayList<String>();
-
-       File[] currentFiles = folder.listFiles();
-
-       if(currentFiles != null) {
-           for (File file : currentFiles) {
-               if (!file.isDirectory()) {
-                   populateGallery.add(new String(file.getPath()));
-               }
-           }
-       }
-    return populateGallery;
-    }
-
+    /**
+     * Desc:
+     *  Sets the main activity imageview to display the photo passed to this function
+     *
+     * Bugs:
+     *  None atm
+     */
     private void displayPhoto(String path) {
         ImageView iv = (ImageView) findViewById(R.id.ivGallery);
         iv.setImageBitmap(BitmapFactory.decodeFile(path));
-
         writeCaption(path);
     }
 
+    /**
+     * Desc:
+     *  Extracts the metadata from the image and updates all textview
+     *  related fields on display
+     *
+     * Bugs:
+     *  None atm
+     */
     private void writeCaption(String path) {
         TextView captiontextrefresh = findViewById(R.id.captionText);
         TextView dateTextRefresh = findViewById(R.id.dateView);
+        TextView latRefresh = findViewById(R.id.latView);
+        TextView lonRefresh = findViewById(R.id.longView);
 
-        String date = path.substring(path.indexOf("_")+1, path.indexOf("_")+9);
-        //String result = path.substring(path.indexOf("_") + 1, path.indexOf("_"));
-
-        dateTextRefresh.setText(date);
-
-        // print to file name to text view
-        String fileName_2 = path.substring(path.indexOf("_*")+2);
-        fileName_2 = fileName_2.substring(0, fileName_2.length() - 4);
-        captiontextrefresh.setText(fileName_2.trim());
+        latRefresh.setText(photoGallery.get(currentPhotoIndex).getLatitude());
+        lonRefresh.setText(photoGallery.get(currentPhotoIndex).getLongitude());
+        //Get image metadata
+        captiontextrefresh.setText(photoGallery.get(currentPhotoIndex).getCaption());
+        dateTextRefresh.setText(photoGallery.get(currentPhotoIndex).dateTime.toString());
     }
 
-    // function to open new search activity
+
+
+    /**
+     * Desc:
+     *  creates a new instance of the share activity with a request code of 404
+     *
+     * Bugs:
+     *  None atm
+     */
+    public void openShareActivity() {
+        Intent intent = new Intent(this, shareActivity.class);
+        intent.putExtra(Picture_Location, mCurrentPhotoPath); //pass file location to new activity
+        startActivityForResult(intent, 404);
+    }
+
+    /**
+     * Desc:
+     *  creates a new instance of the search activity with a request code of 999
+     *
+     * Bugs:
+     *  None atm
+     */
     public void openSearchActivity() {
         Intent intent = new Intent(this, searchActivity.class);
-        intent.putExtra(Picture_Location, mCurrentPhotoPath); //pass file location to new activity
+        //intent.putExtra(Picture_Location, mCurrentPhotoPath); //pass file location to new activity
         startActivityForResult(intent, 999);
     }
 
-
-    // Activate camera and take the picture
+    /**
+     * Desc:
+     *  Opens the camera and lets the user take a picture
+     *
+     * Bugs:
+     *  None atm
+     */
     public void takePicture(View v) {
+        //Request location to tag photo with
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
@@ -268,64 +294,112 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Time stamp picture from camera and put in picture directory
-    // located in android/data/com.example.photogallery/files/pictures
+
+    /**
+     * Desc:
+     *  Takes the photo taken by the user and generates a file name
+     *  at the location: android/data/com.example.photogallery/files/pictures
+     *
+     * Bugs:
+     *  None atm
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, "_*NoCaption.jpg",storageDir);
+        File image = File.createTempFile(imageFileName, "_.jpg",storageDir);
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
-    // Puts image from camera onto the imageview object
+
+
+    /**
+     * Desc:
+     *  Receives results from the other activities and processes the data
+     *  code: 404 - share activity [NOT IN USE]
+     *  code: 999 - search activity
+     *  code: REQUEST_IMAGE_CAPTURE - camera activity
+     *
+     * Bugs:
+     *  None atm
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // execute this if from camera
+        // takes photo from camera activity
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            //Append to photo gallery
+            photoGallery.add(new photoClass(mCurrentPhotoPath));
+            //Set index to the most recent photo
+            currentPhotoIndex = photoGallery.size() - 1;
+            Location location = gps.getLocation();
+            if(location != null) {
+                String longitude = (Location.convert(location.getLongitude(), Location.FORMAT_DEGREES));
+                String latitude = (Location.convert(location.getLatitude(), Location.FORMAT_DEGREES));
 
-            //Repopulate gallery
-            photoGallery = populateGallery(new Date(Long.MIN_VALUE), new Date(Long.MAX_VALUE));
+                photoGallery.get(currentPhotoIndex).setCoordinates(latitude, longitude);
 
-            //TextView captiontextrefresh = findViewById(R.id.captionText);
-            //captiontextrefresh.setText("Please Enter a Caption");
+                Log.i("Dev:: ", "Lat: " + photoGallery.get(currentPhotoIndex).getLatitude() +
+                        " Lon: " + photoGallery.get(currentPhotoIndex).getLongitude());
+            }
+            else
+                Log.i("Dev::", "No GPS signal");
+          
             displayPhoto(mCurrentPhotoPath);
-
-        // execute this if from search activity
+        // takes search query data from search activity
         } else if (requestCode == 999 && resultCode == RESULT_OK) {
-            //ImageView mImageView = (ImageView) findViewById(R.id.ivGallery);
 
-            /*
-            String minDate = data.getStringExtra("minDate");
-            String maxDate = data.getStringExtra("maxDate");
+            String searchType = data.getStringExtra("Type");
 
-            Date startDate = new SimpleDateFormat("yyyyMMdd_HHmmss").parse(minDate);
-            Date endDate = new SimpleDateFormat("yyyyMMdd_HHmmss").parse(maxDate);
+            if(searchType.equals("Date")) {
+                String minDate = data.getStringExtra("minDate") + " 00:00:00";
+                String maxDate = data.getStringExtra("maxDate") + " 24:59:59";
 
-            photoGallery = populateGallery(startDate, endDate);
-            */
+                Date startDate = null;
+                try {
+                    startDate = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(minDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Date endDate = null;
+                try {
+                    endDate = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(maxDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-            TextView captiontextrefresh = findViewById(R.id.captionText);
+                photoGallery = gallery.filterPhotoDates(photoGallery, startDate, endDate);
+            }
+            else if(searchType.equals("Location")) {
+                String latitude = data.getStringExtra("latitude");
+                String longitude = data.getStringExtra("longitude");
+                String radius = data.getStringExtra("radius");
 
-            String filePath = data.getStringExtra("Path");
-            String fileName = data.getStringExtra("Filename");
-            // Print image to imageview
-            //mImageView.setImageBitmap(BitmapFactory.decodeFile(filePath));
+                photoGallery = gallery.filterPhotoLocations(photoGallery, latitude, longitude, radius);
 
+            }
+            else if(searchType.equals("Caption")) {
+                String caption = data.getStringExtra(("captionQuery"));
 
+                photoGallery = gallery.filterPhotoCaption(photoGallery, caption);
+            }
 
-            // print to file name to text view
-            String fileName_2 = fileName.substring(fileName.indexOf("_*")+2);
-            fileName_2 = fileName_2.substring(0, fileName_2.length() - 4);
-            captiontextrefresh.setText(fileName_2.trim());
-
-            mCurrentPhotoPath = filePath;
-            displayPhoto(mCurrentPhotoPath);
+            if (photoGallery.isEmpty()) {
+                Log.i("Dev:: Search yielded", "No photos found");
+                Toast.makeText(getApplicationContext(), "No Photos Found", Toast.LENGTH_SHORT).show();
+                photoGallery = gallery.generatePhotos();
+            }
+            else
+            {
+                Log.i("Dev::", "photos found");
+                //Print to screen how many photos found
+                Toast.makeText(getApplicationContext(), "Found " + photoGallery.size() + " photos!", Toast.LENGTH_SHORT).show();
+                Log.d("Dev::: Search yielded:", Integer.toString(photoGallery.size()));
+                currentPhotoIndex = photoGallery.size() - 1 ;
+                mCurrentPhotoPath = photoGallery.get(currentPhotoIndex).filePath;
+                displayPhoto(mCurrentPhotoPath);
+            }
         }
     }
-
-
-
 }
