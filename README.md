@@ -6,7 +6,7 @@
 
 4. automated UI Tests for the add/edit caption as well as time/location based search functionality of the app should be developed using Espresso (preferrably before the development of these features starts as per BDD) 
 
-## Sprint Two:
+## Sprint Two: (Completed February 18, 2020)
 1. photo location tagging,
 
 2. location based search, 
