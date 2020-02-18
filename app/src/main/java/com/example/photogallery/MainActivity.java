@@ -37,6 +37,7 @@ import androidx.core.content.FileProvider;
 
 import com.example.photogallery.photoPackage.gpsClass;
 import com.example.photogallery.photoPackage.photoClass;
+import com.example.photogallery.photoPackage.gallerySupport;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     // Create GPS class that will return location
     private gpsClass gps = new gpsClass(this);
 
+    // Create gallery populator object that returns the proper sorted gallery
+    private gallerySupport gallery = new gallerySupport();
+
     // Initialize activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
         //Generate gallery
         Date minDate = new Date(Long.MIN_VALUE);
         Date maxDate = new Date(Long.MAX_VALUE);
-        //Location location = gps.getLocation(this);
-        photoGallery = generatePhotos(minDate, maxDate);
+
+        photoGallery = gallery.generatePhotos();
         Log.i("Dev::", "generating gallery");
 
         if (photoGallery.isEmpty()) {
@@ -199,87 +203,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-
-    /**
-     * Desc:
-     *  Corrects the list of photos in the array to only contain those
-     *  specified by the user
-     *
-     * Bugs:
-     *  None atm
-     */
-    private ArrayList<photoClass> filterPhotoLocations(ArrayList<photoClass> photoGallery, String lat, String lon, String rad) {
-        Double latitude = Double.parseDouble(lat);
-        Double longitude = Double.parseDouble(lon);
-        Double radius = Double.parseDouble(rad);
-
-        Double latMin = latitude - radius;
-        Double latMax = latitude + radius;
-
-        Double lonMin = longitude - radius;
-        Double lonMax = longitude + radius;
-
-        for (int index = photoGallery.size() - 1; index >= 0; index--) {
-
-            photoClass photo = photoGallery.get(index);
-
-            if(photo.getLatitude().equals("N/A") && photo.getLongitude().equals("N/A")) {
-                //Invalid coordinates
-                //Remove photo
-                photoGallery.remove(index);
-            }
-            else {
-                Double latPhoto = Double.parseDouble(photo.getLatitude());
-                Double lonPhoto = Double.parseDouble(photo.getLongitude());
-
-                if(latPhoto > latMin && latPhoto < latMax &&
-                        lonPhoto > lonMin && lonPhoto < lonMax) {
-                    //Photo within filter
-                }
-                else {
-                    //Photo not within filter
-                    photoGallery.remove(index);
-                }
-            }
-        }
-
-        return photoGallery;
-    }
-
-    /**
-     * Desc:
-     *  Adds photos from search query to the current photo gallery
-     *
-     * Bugs:
-     *  None atm
-     */
-    private ArrayList<photoClass> generatePhotos(Date minDateQuery, Date maxDateQuery) {
-        File folder = new File(Environment.getExternalStorageDirectory()
-                .getAbsolutePath(), "/Android/data/com.example.photogallery/files/Pictures");
-
-        ArrayList<photoClass> generatePhotos = new ArrayList<photoClass>();
-        File[] currentFiles = folder.listFiles();
-
-        if(minDateQuery == null)
-            minDateQuery = new Date(Long.MIN_VALUE);
-
-        if(maxDateQuery == null)
-            maxDateQuery = new Date(Long.MAX_VALUE);
-
-        if(currentFiles != null) {
-            for (File file : currentFiles) {
-                if (!file.isDirectory()) {
-                    //If found photos, add to gallery
-                    photoClass tempPhoto = new photoClass(file.getPath());
-
-                    if(tempPhoto.dateTime.after(minDateQuery) && tempPhoto.dateTime.before(maxDateQuery))
-                        generatePhotos.add(tempPhoto);
-                }
-            }
-        }
-        return generatePhotos;
     }
 
 
@@ -446,21 +369,26 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                photoGallery = generatePhotos(startDate, endDate);
+                photoGallery = gallery.filterPhotoDates(photoGallery, startDate, endDate);
             }
             else if(searchType.equals("Location")) {
                 String latitude = data.getStringExtra("latitude");
                 String longitude = data.getStringExtra("longitude");
                 String radius = data.getStringExtra("radius");
 
-                photoGallery = filterPhotoLocations(photoGallery, latitude, longitude, radius);
+                photoGallery = gallery.filterPhotoLocations(photoGallery, latitude, longitude, radius);
 
+            }
+            else if(searchType.equals("Caption")) {
+                String caption = data.getStringExtra(("captionQuery"));
+
+                photoGallery = gallery.filterPhotoCaption(photoGallery, caption);
             }
 
             if (photoGallery.isEmpty()) {
                 Log.i("Dev:: Search yielded", "No photos found");
                 Toast.makeText(getApplicationContext(), "No Photos Found", Toast.LENGTH_SHORT).show();
-                photoGallery = generatePhotos(null, null);
+                photoGallery = gallery.generatePhotos();
             }
             else
             {

@@ -16,8 +16,8 @@ public class photoClass {
     public String filePath;
     public Date dateTime;
 
-    public String latitude;
-    public String longitude;
+    public String lat;
+    public String lon;
 
     /**
      * Desc:
@@ -33,7 +33,8 @@ public class photoClass {
             //Convert date string to date object
             try {
                 String tempDate = exif.getAttribute(ExifInterface.TAG_DATETIME);
-                dateTime = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(tempDate);
+                if(tempDate != null)
+                    dateTime = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse(tempDate);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -170,6 +171,8 @@ public class photoClass {
      */
     public void setCoordinates(String latitude, String longitude) {
         String coordinates = latitude + "_" + longitude;
+        lat = latitude;
+        lon = longitude;
 
         try {
             ExifInterface exif = new ExifInterface(filePath);
