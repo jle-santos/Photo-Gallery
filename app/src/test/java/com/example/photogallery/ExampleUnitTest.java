@@ -64,6 +64,7 @@ public class ExampleUnitTest {
 
         Date minDate = null;
         Date maxDate = null;
+
         try {
             minDate = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss").parse("2017:02:03 00:00:00");
         } catch (ParseException e) {
@@ -77,14 +78,12 @@ public class ExampleUnitTest {
         }
 
         tempGallery = gallery.filterPhotoDates(tempGallery, minDate, maxDate);
-
         assertEquals(tempDate,tempGallery.get(tempGallery.size()-1).dateTime);
     }
 
     @Test
-    public void testNoPhotos_Location() {
+    public void testEmptyGallery_Location() {
         ArrayList<photoClass> tempGallery = new ArrayList();
-
         gallerySupport gallery = new gallerySupport();
 
         String testLat = "49";
@@ -114,18 +113,16 @@ public class ExampleUnitTest {
         //Add photo
         tempGallery.add(new photoClass(tempFile.getPath()));
 
-        //tempGallery.get(tempGallery.size()-1).setCoordinates("49", "-122");
-
         String test = tempGallery.get(tempGallery.size()-1).getLatitude();
         //Set coordinates
         gallerySupport gallery = new gallerySupport();
 
-        String testLat = "49";
+        String testLat = "55";
         String testLon = "-122";
         String testRad = "5";
 
         tempGallery = gallery.filterPhotoLocations(tempGallery, testLat, testLon, testRad);
 
-        assertEquals(1 ,tempGallery.size());
+        assertEquals(0,tempGallery.size());
     }
 }
