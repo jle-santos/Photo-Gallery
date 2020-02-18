@@ -1,4 +1,4 @@
-package com.example.photogallery;
+package com.example.photogallery.photoPackage;
 
 import android.net.Uri;
 import android.os.Environment;
@@ -25,9 +25,9 @@ import java.util.Date;
 import static org.junit.Assert.*;
 
 /**
- * Example local unit test, which will execute on the development machine (host).
+ * Example Local Unit Test of the photoPackage Class
  *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ *
  */
 public class ExampleUnitTest {
     @Test
