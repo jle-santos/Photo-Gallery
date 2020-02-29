@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<input type="button" class="button" value="Logout">
+
+<img id="myImg" src="placeholder.gif" >
+
+
+<style>
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.desc{
+  text-align: center;
+}
+.right {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  float:right;
+}
+.left {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  float:left;
+}
+.mid {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  float:middle;
+}
+</style>
+
+<div class="desc">
+  <input type="button" class="mid" value="upload"><br/>
+  <h2>Database Pagie</h2>
+  <form method="post" action="database">
+	&nbsp;
+    Caption: <input type="text" name="caption"/> <br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Date:  <input type="text" name="date"/> <br/>
+	Location:  <input type="text" name="location"/> <br/>
+    <input type="submit" value="search" name = "search" /><br/>
+  </form>
+  <p>Authors: Ryan, Karen & Lemuel</p>
+</div>
+<input type="button" class="left" value="prev">
+<input type="button" class="right" value="next">
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<body>
+<img id="myImg" src="placeholder.gif" >
+
+
+<style>
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.desc{
+  text-align: center;
+}
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  float:left;
+}
+</style>
+
+
+
+<div class="desc">  
+  <button type="button" onclick="alert('not finished')">choose a file</button><br/><br/>
+  <h2>Database Pagie</h2>
+  <form method="post" action="upload">
+    Set caption: <input type="text" name="caption"/> <br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+	Set date:  <input type="text" name="date"/> <br/>
+	set location:  <input type="text" name="location"/> <br/>
+    <input type="submit" value="upload" name = "upload" />
+  </form>
+  <p>Authors: Ryan, Karen & Lemuel</p>
+</div>
+
+<input type="button" class="button" value="back">
+</body>
+</html>
