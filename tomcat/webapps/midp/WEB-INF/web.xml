@@ -28,8 +28,13 @@
   <servlet>
     <servlet-name>upload</servlet-name>
     <servlet-class>uploadServlet</servlet-class>
+    <multipart-config>
+        <max-file-size>10485760</max-file-size>
+        <max-request-size>20971520</max-request-size>
+        <file-size-threshold>5242880</file-size-threshold>
+    </multipart-config>  
   </servlet>
-  
+
   <servlet-mapping>
     <servlet-name>upload</servlet-name>
     <url-pattern>/upload</url-pattern>
