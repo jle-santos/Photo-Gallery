@@ -7,6 +7,21 @@
     tools:context=".shareActivity">
 
     <Button
+        android:id="@+id/btnDatabase"
+        android:layout_width="125dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="144dp"
+        android:backgroundTint="#E02B71"
+        android:fontFamily="sans-serif"
+        android:text="DATABASE"
+        android:textColor="#FFFFFF"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
         android:id="@+id/btnDiscord"
         android:layout_width="125dp"
         android:layout_height="52dp"
