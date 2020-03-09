@@ -85,7 +85,7 @@ public class shareActivity extends AppCompatActivity {
 
                 try {
                     // load the driver class
-                    Class.forName("oracle.jdbc.OracleDriver");
+                    Class.forName("oracle.jdbc.driver.OracleDriver");
                     Log.i("Driver connection:", "drivers loaded");
                 }
                 catch (Exception ex) {
@@ -95,7 +95,7 @@ public class shareActivity extends AppCompatActivity {
 
                 try {
                     // establish connection
-                    con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "riseup");
+                    con = DriverManager.getConnection("jdbc:oracle:thin:@192.168.42.49:1521:XE", "system", "riseup");
                     con.setAutoCommit(false);
                     // create table ImageTable(CAPTION char(400), TAKEN char(400), LONGITUDE char(400), LATITUDE char(400), PHOTO BLOB);
                     // Get a result set containing all data from test_table
