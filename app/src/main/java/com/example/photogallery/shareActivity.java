@@ -113,7 +113,7 @@ public class shareActivity extends AppCompatActivity {
                     finish();
                 }
                 catch(SQLException ex) {
-                    Toast.makeText(getApplicationContext(), "Could not connect to database", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Could not connect to database", Toast.LENGTH_SHORT).show();
                     finish();
 
                 }
