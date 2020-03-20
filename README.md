@@ -17,7 +17,7 @@
 
 5. automation of location based search
 
-## Sprint Three: 
+## Sprint Three: (Completed March 3, 2020)
 1. allows users to upload photos from Android App to the server.
 
 2. supports time, caption and location based search of the photos and ability to view these photos through a browser.
