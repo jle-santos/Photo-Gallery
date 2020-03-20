@@ -16,3 +16,12 @@
 4. unit tests using JUnit,
 
 5. automation of location based search
+
+## Sprint Three: 
+1. allows users to upload photos from Android App to the server.
+
+2. supports time, caption and location based search of the photos and ability to view these photos through a browser.
+
+3. Integrate a relational database to the server for better management of photos.
+
+4. allows user to also upload photos from their desktops to the server with time, location and caption tags.

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<input id="logout" type="button" class="button" value="Logout">
+  <script type="text/javascript">
+    document.getElementById("logout").onclick = function () {
+        location.href = "http://localhost:8081/midp/login.html";
+    };
+</script>
+<img id="myimg" src="searche.jpg?<?php echo(time()); ?>  width="720" height="480">
+
+
+<style>
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.desc{
+  text-align: center;
+}
+.right {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  float:right;
+}
+.left {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  float:left;
+}
+.mid {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  float:middle;
+}
+</style>
+
+<div class="desc">
+  <input id="redirect" type="button" class="mid" value="upload"><br/>
+  <script type="text/javascript">
+    document.getElementById("redirect").onclick = function () {
+        location.href = "http://localhost:8081/midp/upload.html";
+    };
+</script>
+  <h2>Database Pagie</h2>
+  <form method="post" action="database">
+
+	&nbsp;
+    Caption: <input type="text" name="caption" value="rise up!"/> <br/><br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Date:  <input type="text" name="date" maxlength="8" size="8" value="04/10/20"/> <br/><br/>
+	Longitude:  <input type="text" name="longitude" value="49.2827" size="5"/> <br/>
+	Latitude:  <input type="text" name="latitude" value="123.1207" size="5" /> <br/>
+    <input type="submit" value="search" name = "search" /><br/>
+	<p>Authors: Ryan, Karen & Lemuel</p>
+	
+  </form>
+  
+</div>
+
+</body>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+</HEAD>
+</html>

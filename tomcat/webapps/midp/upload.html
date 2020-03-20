@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+
+<style>
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.desc{
+  text-align: center;
+}
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  float:left;
+}
+</style>
+
+
+
+<div class="desc">  
+  <form method="post" action="upload"  enctype="multipart/form-data">
+	<img id="myImg" src="placeholder.gif" name="displayImg" width="520" height="293" >
+    <input type="file" id="file" name="file">
+	<script type="text/javascript">
+    document.getElementById("file").onchange = function () {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("myImg").src = e.target.result;
+    };
+
+    // read the image file as a data URL.
+    reader.readAsDataURL(this.files[0]);
+	};
+</script>
+	<h2>Upload Pagie</h2>
+	&nbsp;
+    Caption: <input type="text" name="caption"/> <br/><br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Date:  <input type="text" name="date" maxlength="8" size="8"/> <br/><br/>
+	Longitude:  <input type="text" name="longitude"  size="5"/> <br/><br/>
+	Latitude:  <input type="text" name="latitude"  size="5" /> <br/><br/>
+	
+    <input type="submit" value="upload" name = "upload" />
+  </form>
+  <p>Authors: Ryan, Karen & Lemuel</p>
+</div>
+
+<input type="button" class="button" id="back" value="back">
+  <script type="text/javascript">
+    document.getElementById("back").onclick = function () {
+        location.href = "http://localhost:8081/midp/database.html";
+    };
+</script>
+</body>
+</html>
