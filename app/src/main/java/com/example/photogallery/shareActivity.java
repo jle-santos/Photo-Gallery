@@ -60,16 +60,16 @@ public class shareActivity extends AppCompatActivity {
                 InputStream image = null;
                 Log.i("btnDatabase", "has been pressed");
 
-//                String caption = file.getCaption();
-//                String date = file.dateTime;
-//                String longitude = file.getLongitude();
-//                String latitude = file.getLatitude();
+                String caption = file.getCaption();
+                String date = file.dateTime;
+                String longitude = file.getLongitude();
+                String latitude = file.getLatitude();
 
 
-                String caption = "y";
-                String date = "y";
-                String longitude ="y";
-                String latitude = "y";
+//                String caption = "y";
+//                String date = "y";
+//                String longitude ="y";
+//                String latitude = "y";
                 File im = new File(filePath);
                 try {
                     image = new FileInputStream(im);
@@ -85,7 +85,7 @@ public class shareActivity extends AppCompatActivity {
 
                 try {
                     // load the driver class
-                    Class.forName("oracle.jdbc.driver.OracleDriver");
+                    Class.forName("oracle.jdbc.OracleDriver");
                     Log.i("Driver connection:", "drivers loaded");
                 }
                 catch (Exception ex) {
